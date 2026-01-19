@@ -18,8 +18,6 @@ import com.ihealth.communication.utils.ByteBufferUtil;
 import com.ihealth.demo.R;
 import com.ihealth.demo.business.FunctionFoldActivity;
 
-import butterknife.OnClick;
-
 
 public class BG5A extends FunctionFoldActivity {
 
@@ -55,6 +53,22 @@ public class BG5A extends FunctionFoldActivity {
         /* Get bg5s controller */
         mBg5aControl = iHealthDevicesManager.getInstance().getBg5aControl(mDeviceMac);
 
+        // 设置点击监听器
+        findViewById(R.id.btnDisconnect).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnMeasurement).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnMeasurement2).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnMeasurement3).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnGetStatus).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnSetTime).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnSetUnit).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnSetUnit2).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnOfflineMeasureEnable).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnOfflineMeasureDisable).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnDeleteData).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnGetData).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnCloseBluetooth).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnEnableDisplay).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnDisableDisplay).setOnClickListener(this::onViewClicked);
     }
 
     private iHealthDevicesCallback miHealthDevicesCallback = new iHealthDevicesCallback() {
@@ -140,106 +154,59 @@ public class BG5A extends FunctionFoldActivity {
     }
 
 
-    @OnClick({R.id.btnDisconnect,
-            R.id.btnMeasurement,
-            R.id.btnMeasurement2,
-            R.id.btnMeasurement3,
-            R.id.btnGetStatus,
-            R.id.btnSetTime,
-            R.id.btnSetUnit,
-            R.id.btnSetUnit2,
-            R.id.btnOfflineMeasureEnable,
-            R.id.btnOfflineMeasureDisable,
-            R.id.btnDeleteData,
-            R.id.btnGetData,
-            R.id.btnCloseBluetooth,
-            R.id.btnEnableDisplay,
-            R.id.btnDisableDisplay})
     public void onViewClicked(View view) {
         if (mBg5aControl == null) {
             addLogInfo("mBg5aControl == null");
             return;
         }
         showLogLayout();
-        switch (view.getId()) {
-            case R.id.btnDisconnect:
-                mBg5aControl.disconnect();
-                addLogInfo("disconnect()");
-                break;
-
-            case R.id.btnGetStatus:
-                mBg5aControl.getDeviceInfo();
-                addLogInfo("getDeviceInfo()");
-                break;
-
-            case R.id.btnMeasurement:
-                mBg5aControl.setMeasureType(0);
-                addLogInfo("startMeasure() --> set blood mode");
-                break;
-
-            case R.id.btnMeasurement2:
-                mBg5aControl.setMeasureType(1);
-                addLogInfo("startMeasure() --> test ctl mode");
-                break;
-
-            case R.id.btnMeasurement3:
-                mBg5aControl.setMeasureType(2);
-                addLogInfo("startMeasure() --> test with test mode");
-                break;
-
-            case R.id.btnSetTime:
-                //timeZone
-                mBg5aControl.setTime(System.currentTimeMillis(), ByteBufferUtil.getTimeZone());
+        int id = view.getId();
+        if (id == R.id.btnDisconnect) {
+            mBg5aControl.disconnect();
+            addLogInfo("disconnect()");
+        } else if (id == R.id.btnGetStatus) {
+            mBg5aControl.getDeviceInfo();
+            addLogInfo("getDeviceInfo()");
+        } else if (id == R.id.btnMeasurement) {
+            mBg5aControl.setMeasureType(0);
+            addLogInfo("startMeasure() --> set blood mode");
+        } else if (id == R.id.btnMeasurement2) {
+            mBg5aControl.setMeasureType(1);
+            addLogInfo("startMeasure() --> test ctl mode");
+        } else if (id == R.id.btnMeasurement3) {
+            mBg5aControl.setMeasureType(2);
+            addLogInfo("startMeasure() --> test with test mode");
+        } else if (id == R.id.btnSetTime) {//timeZone
+            mBg5aControl.setTime(System.currentTimeMillis(), ByteBufferUtil.getTimeZone());
 //                mBg5aControl.setTime(System.currentTimeMillis(), 0);
-                addLogInfo("setTime()");
-                break;
-
-            case R.id.btnSetUnit:
-                mBg5aControl.setMeasureUnit(1);
-                addLogInfo("setUnit()--> mmol/L");
-                break;
-
-            case R.id.btnSetUnit2:
-                mBg5aControl.setMeasureUnit(2);
-                addLogInfo("setUnit()--> mg/dL");
-                break;
-
-            case R.id.btnOfflineMeasureEnable:
-                mBg5aControl.enableOfflineMeasure(true);
-                addLogInfo("enableOfflineMeasure()");
-                break;
-
-            case R.id.btnOfflineMeasureDisable:
-                mBg5aControl.enableOfflineMeasure(false);
-                addLogInfo("disableOfflineMeasure()");
-                break;
-
-            case R.id.btnDeleteData:
-                mBg5aControl.deleteHistoryData();
-                addLogInfo("deleteOfflineData()");
-                break;
-
-            case R.id.btnGetData:
-                mBg5aControl.getHistoryData();
-                addLogInfo("getOfflineData()");
-                break;
-
-            case R.id.btnCloseBluetooth:
-                mBg5aControl.closeBluetooth();
-                addLogInfo("closeBluetooth()");
-                break;
-
-            case R.id.btnEnableDisplay:
-                mBg5aControl.enableDisplayMode(true);
-                addLogInfo("enableDisplayMode() true");
-                break;
-
-            case R.id.btnDisableDisplay:
-                mBg5aControl.enableDisplayMode(false);
-                addLogInfo("enableDisplayMode() false");
-                break;
-
-
+            addLogInfo("setTime()");
+        } else if (id == R.id.btnSetUnit) {
+            mBg5aControl.setMeasureUnit(1);
+            addLogInfo("setUnit()--> mmol/L");
+        } else if (id == R.id.btnSetUnit2) {
+            mBg5aControl.setMeasureUnit(2);
+            addLogInfo("setUnit()--> mg/dL");
+        } else if (id == R.id.btnOfflineMeasureEnable) {
+            mBg5aControl.enableOfflineMeasure(true);
+            addLogInfo("enableOfflineMeasure()");
+        } else if (id == R.id.btnOfflineMeasureDisable) {
+            mBg5aControl.enableOfflineMeasure(false);
+            addLogInfo("disableOfflineMeasure()");
+        } else if (id == R.id.btnDeleteData) {
+            mBg5aControl.deleteHistoryData();
+            addLogInfo("deleteOfflineData()");
+        } else if (id == R.id.btnGetData) {
+            mBg5aControl.getHistoryData();
+            addLogInfo("getOfflineData()");
+        } else if (id == R.id.btnCloseBluetooth) {
+            mBg5aControl.closeBluetooth();
+            addLogInfo("closeBluetooth()");
+        } else if (id == R.id.btnEnableDisplay) {
+            mBg5aControl.enableDisplayMode(true);
+            addLogInfo("enableDisplayMode() true");
+        } else if (id == R.id.btnDisableDisplay) {
+            mBg5aControl.enableDisplayMode(false);
+            addLogInfo("enableDisplayMode() false");
         }
     }
 }

@@ -9,10 +9,7 @@ import android.widget.TextView;
 
 import com.ihealth.demo.R;
 import com.ihealth.demo.base.BaseFragment;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
+import com.ihealth.demo.databinding.FragmentLogBinding;
 
 /**
  * LogFragment
@@ -22,9 +19,9 @@ public class LogFragment extends BaseFragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    @BindView(R.id.tvLogTitle)
+    
+    private FragmentLogBinding binding;
     TextView mTvLogTitle;
-    @BindView(R.id.tvLogMessage)
     TextView mTvLogMessage;
 
     // TODO: Rename and change types of parameters
@@ -74,6 +71,9 @@ public class LogFragment extends BaseFragment {
     public void initView() {
         mContext = getActivity();
         mMainActivity = (MainActivity) mContext;
+        binding = FragmentLogBinding.bind(mRootView);
+        mTvLogTitle = binding.layoutLog.tvLogTitle;
+        mTvLogMessage = binding.layoutLog.tvLogMessage;
         mTvLogMessage.setText(mMainActivity.getLogInformation());
     }
 

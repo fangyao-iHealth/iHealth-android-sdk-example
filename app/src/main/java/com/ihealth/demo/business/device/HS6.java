@@ -28,53 +28,29 @@ import org.json.JSONTokener;
 import java.io.IOException;
 import java.io.InputStream;
 
-import butterknife.BindView;
-import butterknife.OnClick;
-
 
 public class HS6 extends FunctionFoldActivity {
-    @BindView(R.id.etUserName)
     EditText mEtUserName;
-    @BindView(R.id.btnCreate)
     Button mBtnCreate;
-    @BindView(R.id.btnAuthorization)
     Button mBtnAuthorization;
-    @BindView(R.id.mEtSsid)
     EditText mEtSsid;
-    @BindView(R.id.etPassword)
     EditText mEtPassword;
-    @BindView(R.id.etDeviceKey)
     EditText mEtDeviceKey;
-    @BindView(R.id.etUnit)
     EditText mEtSetUnit;
-    @BindView(R.id.btnSetWifi)
     Button mBtnSetWifi;
-    @BindView(R.id.etBirthday)
     EditText mEtBirthday;
-    @BindView(R.id.etSerial)
     EditText mEtSerial;
-    @BindView(R.id.etHeight)
     EditText mEtHeight;
-    @BindView(R.id.etWeight)
     EditText mEtWeight;
-    @BindView(R.id.etGender)
     EditText mEtGender;
-    @BindView(R.id.etSport)
     EditText mEtSport;
-    @BindView(R.id.btnBind)
     Button mBtnBind;
-    @BindView(R.id.btnUnBind)
     Button mBtnUnBind;
 
-    @BindView(R.id.btnGetData)
     Button mBtnGetData;
-    @BindView(R.id.etClientId)
     EditText mEtClientId;
-    @BindView(R.id.etClientSecret)
     EditText mEtClientSecret;
-    @BindView(R.id.etClientRandom)
     EditText mEtClientRandom;
-    @BindView(R.id.btnGetToken)
     Button mBtnGetToken;
     private Context mContext;
     private HS6Control mHS6control;
@@ -95,6 +71,38 @@ public class HS6 extends FunctionFoldActivity {
         mDeviceMac = intent.getStringExtra("mac");
         mDeviceName = intent.getStringExtra("type");
 
+        // 初始化视图
+        mEtUserName = findViewById(R.id.etUserName);
+        mBtnCreate = findViewById(R.id.btnCreate);
+        mBtnAuthorization = findViewById(R.id.btnAuthorization);
+        mEtSsid = findViewById(R.id.mEtSsid);
+        mEtPassword = findViewById(R.id.etPassword);
+        mEtDeviceKey = findViewById(R.id.etDeviceKey);
+        mEtSetUnit = findViewById(R.id.etUnit);
+        mBtnSetWifi = findViewById(R.id.btnSetWifi);
+        mEtBirthday = findViewById(R.id.etBirthday);
+        mEtSerial = findViewById(R.id.etSerial);
+        mEtHeight = findViewById(R.id.etHeight);
+        mEtWeight = findViewById(R.id.etWeight);
+        mEtGender = findViewById(R.id.etGender);
+        mEtSport = findViewById(R.id.etSport);
+        mBtnBind = findViewById(R.id.btnBind);
+        mBtnUnBind = findViewById(R.id.btnUnBind);
+        mBtnGetData = findViewById(R.id.btnGetData);
+        mEtClientId = findViewById(R.id.etClientId);
+        mEtClientSecret = findViewById(R.id.etClientSecret);
+        mEtClientRandom = findViewById(R.id.etClientRandom);
+        mBtnGetToken = findViewById(R.id.btnGetToken);
+        
+        // 设置点击监听器
+        mBtnCreate.setOnClickListener(this::onViewClicked);
+        mBtnAuthorization.setOnClickListener(this::onViewClicked);
+        mBtnSetWifi.setOnClickListener(this::onViewClicked);
+        mBtnBind.setOnClickListener(this::onViewClicked);
+        mBtnUnBind.setOnClickListener(this::onViewClicked);
+        mBtnGetData.setOnClickListener(this::onViewClicked);
+        mBtnGetToken.setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnSetUnit).setOnClickListener(this::onViewClicked);
     }
 
     iHealthDeviceHs6Callback mIHealthDeviceHs6Callback = new iHealthDeviceHs6Callback() {
@@ -245,114 +253,104 @@ public class HS6 extends FunctionFoldActivity {
     };
 
 
-    @OnClick({R.id.btnCreate, R.id.btnAuthorization, R.id.btnSetWifi, R.id.btnBind,
-            R.id.btnUnBind, R.id.btnGetData, R.id.btnGetToken,R.id.btnSetUnit})
     public void onViewClicked(View view) {
         showLogLayout();
-        switch (view.getId()) {
-            case R.id.btnCreate:
-                final String userName = mEtUserName.getText().toString().trim();
-                mHS6control = new HS6Control(userName, this, iHealthDevicesManager.TYPE_HS6, mIHealthDeviceHs6Callback);
-                mBtnAuthorization.setEnabled(true);
-                addLogInfo("Create HS6Control");
-                break;
-            case R.id.btnAuthorization:
-                try {
-                    InputStream is = getAssets().open("com_demo_sdk_android.pem");
-                    int size = is.available();
-                    byte[] buffer = new byte[size];
-                    is.read(buffer);
-                    is.close();
-                    mHS6control.sdkAuthWithLicense(buffer);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                mBtnSetWifi.setEnabled(true);
-                mBtnBind.setEnabled(true);
-                mBtnUnBind.setEnabled(true);
-                mBtnGetData.setEnabled(true);
-                mBtnGetToken.setEnabled(true);
-                addLogInfo("HS6 SdkAuthWithLicense()");
-                break;
-            case R.id.btnSetWifi:
-                mLoadingDialog.show();
-                String ssid = mEtSsid.getText().toString().trim();
-                String password = mEtPassword.getText().toString().trim();
-                String deviceKey = mEtDeviceKey.getText().toString().trim();
-                if (deviceKey.isEmpty()) {
-                    mHS6control.setWifi(ssid, password);
-                } else {
-                    mHS6control.setWifi(ssid, password, deviceKey);
-                }
-                addLogInfo("HS6 setWifi --> ssid:" + ssid + " password:" + password + " deviceKey:" + deviceKey);
-                break;
-            case R.id.btnBind:
-                mLoadingDialog.show();
-                final String birthday = mEtBirthday.getText().toString().trim();
-                final String weight = mEtWeight.getText().toString().trim();
-                final String height = mEtHeight.getText().toString().trim();
-                final String sport = mEtSport.getText().toString().trim();
-                final String gender = mEtGender.getText().toString().trim();
-                final String serialNumber = mEtSerial.getText().toString().trim();
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mHS6control.bindDeviceHS6(birthday, Float.parseFloat(weight), Integer.parseInt(height),
-                                Integer.parseInt(sport), Integer.parseInt(gender), serialNumber);
+        int id = view.getId();
+        if (id == R.id.btnCreate) {
+            final String userName = mEtUserName.getText().toString().trim();
+            mHS6control = new HS6Control(userName, this, iHealthDevicesManager.TYPE_HS6, mIHealthDeviceHs6Callback);
+            mBtnAuthorization.setEnabled(true);
+            addLogInfo("Create HS6Control");
+        } else if (id == R.id.btnAuthorization) {
+            try {
+                InputStream is = getAssets().open("com_demo_sdk_android.pem");
+                int size = is.available();
+                byte[] buffer = new byte[size];
+                is.read(buffer);
+                is.close();
+                mHS6control.sdkAuthWithLicense(buffer);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            mBtnSetWifi.setEnabled(true);
+            mBtnBind.setEnabled(true);
+            mBtnUnBind.setEnabled(true);
+            mBtnGetData.setEnabled(true);
+            mBtnGetToken.setEnabled(true);
+            addLogInfo("HS6 SdkAuthWithLicense()");
+        } else if (id == R.id.btnSetWifi) {
+            mLoadingDialog.show();
+            String ssid = mEtSsid.getText().toString().trim();
+            String password = mEtPassword.getText().toString().trim();
+            String deviceKey = mEtDeviceKey.getText().toString().trim();
+            if (deviceKey.isEmpty()) {
+                mHS6control.setWifi(ssid, password);
+            } else {
+                mHS6control.setWifi(ssid, password, deviceKey);
+            }
+            addLogInfo("HS6 setWifi --> ssid:" + ssid + " password:" + password + " deviceKey:" + deviceKey);
+        } else if (id == R.id.btnBind) {
+            mLoadingDialog.show();
+            final String birthday = mEtBirthday.getText().toString().trim();
+            final String weight = mEtWeight.getText().toString().trim();
+            final String height = mEtHeight.getText().toString().trim();
+            final String sport = mEtSport.getText().toString().trim();
+            final String gender = mEtGender.getText().toString().trim();
+            final String serialNumber = mEtSerial.getText().toString().trim();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    mHS6control.bindDeviceHS6(birthday, Float.parseFloat(weight), Integer.parseInt(height),
+                            Integer.parseInt(sport), Integer.parseInt(gender), serialNumber);
 
-                    }
-                }).start();
-                addLogInfo("HS6 bindDeviceHS6() --> birthday:" + birthday + " weight:" + weight + " height:" + height
-                        + " sport:" + sport + " gender:" + gender + " serialNumber:" + serialNumber);
-                break;
-            case R.id.btnUnBind:
-                mLoadingDialog.show();
-                final String unSerialNumber = mEtSerial.getText().toString().trim();
-                new Thread(new Runnable() {
+                }
+            }).start();
+            addLogInfo("HS6 bindDeviceHS6() --> birthday:" + birthday + " weight:" + weight + " height:" + height
+                    + " sport:" + sport + " gender:" + gender + " serialNumber:" + serialNumber);
+        } else if (id == R.id.btnUnBind) {
+            mLoadingDialog.show();
+            final String unSerialNumber = mEtSerial.getText().toString().trim();
+            new Thread(new Runnable() {
 
-                    @Override
-                    public void run() {
-                        mHS6control.unBindDeviceHS6(unSerialNumber);
-                    }
-                }).start();
-                addLogInfo("HS6 unBindDeviceHS6() --> serialNumber:" + unSerialNumber);
-                break;
-            case R.id.btnSetUnit:
-                mLoadingDialog.show();
-                final String unit=mEtSetUnit.getText().toString().trim();
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mHS6control.setUnit(mEtUserName.getText().toString().trim(),Integer.parseInt(unit));
-                    }
-                }).start();
-                addLogInfo("HS6 btnSetUnit() --> unit:" + unit);
-                break;
-            case R.id.btnGetData:
-                mLoadingDialog.show();
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mHS6control.getDataByMeasuretimeFromCloud(0, 5);
-                    }
-                }).start();
-                addLogInfo("HS6 getDataByMeasuretimeFromCloud()");
-                break;
-            case R.id.btnGetToken:
-                mLoadingDialog.show();
-                final String clientId = mEtClientId.getText().toString().trim();
-                final String clientSecret = mEtClientSecret.getText().toString().trim();
-                final String clientPara = mEtClientRandom.getText().toString().trim();
-                final String username = mEtUserName.getText().toString().trim();
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mHS6control.getToken(clientId, clientSecret, clientPara, username);
-                    }
-                }).start();
-                addLogInfo("HS6 getToken() --> clientId:" + clientId + " clientSecret:" + clientSecret + " clientPara:" + clientPara
-                        + " username:" + username);
-                break;
+                @Override
+                public void run() {
+                    mHS6control.unBindDeviceHS6(unSerialNumber);
+                }
+            }).start();
+            addLogInfo("HS6 unBindDeviceHS6() --> serialNumber:" + unSerialNumber);
+        } else if (id == R.id.btnSetUnit) {
+            mLoadingDialog.show();
+            final String unit = mEtSetUnit.getText().toString().trim();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    mHS6control.setUnit(mEtUserName.getText().toString().trim(), Integer.parseInt(unit));
+                }
+            }).start();
+            addLogInfo("HS6 btnSetUnit() --> unit:" + unit);
+        } else if (id == R.id.btnGetData) {
+            mLoadingDialog.show();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    mHS6control.getDataByMeasuretimeFromCloud(0, 5);
+                }
+            }).start();
+            addLogInfo("HS6 getDataByMeasuretimeFromCloud()");
+        } else if (id == R.id.btnGetToken) {
+            mLoadingDialog.show();
+            final String clientId = mEtClientId.getText().toString().trim();
+            final String clientSecret = mEtClientSecret.getText().toString().trim();
+            final String clientPara = mEtClientRandom.getText().toString().trim();
+            final String username = mEtUserName.getText().toString().trim();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    mHS6control.getToken(clientId, clientSecret, clientPara, username);
+                }
+            }).start();
+            addLogInfo("HS6 getToken() --> clientId:" + clientId + " clientSecret:" + clientSecret + " clientPara:" + clientPara
+                    + " username:" + username);
         }
     }
     @Override

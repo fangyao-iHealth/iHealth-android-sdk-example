@@ -28,27 +28,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 
 public class PO3 extends FunctionFoldActivity {
-    @BindView(R.id.btnCheckDevice)
     Button mBtnCheckDevice;
-    @BindView(R.id.btnCheckCloud)
     Button mBtnCheckCloud;
-    @BindView(R.id.btnDownload)
     Button mBtnDownload;
-    @BindView(R.id.btnUpgrade)
     Button mBtnUpgrade;
-    @BindView(R.id.btnStopUpgrade)
     Button mBtnStopUpgrade;
-    @BindView(R.id.btnMeasurement)
     Button mBtnMeasurement;
-    @BindView(R.id.btnBattery)
     Button mBtnBattery;
-    @BindView(R.id.btnGetData)
     Button mBtnGetData;
 
 
@@ -84,6 +72,28 @@ public class PO3 extends FunctionFoldActivity {
         /* Get po3 controller */
         mPo3Control = iHealthDevicesManager.getInstance().getPo3Control(mDeviceMac);
 
+        // 初始化视图
+        mBtnCheckDevice = findViewById(R.id.btnCheckDevice);
+        mBtnCheckCloud = findViewById(R.id.btnCheckCloud);
+        mBtnDownload = findViewById(R.id.btnDownload);
+        mBtnUpgrade = findViewById(R.id.btnUpgrade);
+        mBtnStopUpgrade = findViewById(R.id.btnStopUpgrade);
+        mBtnMeasurement = findViewById(R.id.btnMeasurement);
+        mBtnBattery = findViewById(R.id.btnBattery);
+        mBtnGetData = findViewById(R.id.btnGetData);
+        
+        // 设置点击监听器
+        findViewById(R.id.btnDisconnect).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnMeasurement).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnSetTime).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnGetTime).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnBattery).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnGetData).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnCheckDevice).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnCheckCloud).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnDownload).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnUpgrade).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnStopUpgrade).setOnClickListener(this::onViewClicked);
     }
 
     private iHealthDevicesCallback miHealthDevicesCallback = new iHealthDevicesCallback() {
@@ -304,88 +314,63 @@ public class PO3 extends FunctionFoldActivity {
     }
 
 
-    @OnClick({R.id.btnDisconnect,
-            R.id.btnMeasurement,
-            R.id.btnSetTime,
-            R.id.btnGetTime,
-            R.id.btnBattery,
-            R.id.btnGetData,
-            R.id.btnCheckDevice,
-            R.id.btnCheckCloud,
-            R.id.btnDownload,
-            R.id.btnUpgrade,
-            R.id.btnStopUpgrade})
     public void onViewClicked(View view) {
         if (mPo3Control == null) {
             addLogInfo("mPo3Control == null");
             return;
         }
         showLogLayout();
-        switch (view.getId()) {
-            case R.id.btnDisconnect:
-                mPo3Control.disconnect();
-                addLogInfo("disconnect()");
-                break;
-            case R.id.btnMeasurement:
-                mPo3Control.startMeasure();
-                addLogInfo("startMeasure()");
-                break;
-            case R.id.btnSetTime:
-//                mPo3Control.setTime();
-                addLogInfo("startMeasure()");
-                break;
-            case R.id.btnGetTime:
-//                mPo3Control.getTime();
-                addLogInfo("startMeasure()");
-                break;
-            case R.id.btnGetData:
-                mPo3Control.getHistoryData();
-                addLogInfo("getHistoryData()");
-                break;
-            case R.id.btnBattery:
-                mPo3Control.getBattery();
-                addLogInfo("getBattery()");
-                break;
-            case R.id.btnCheckDevice:
-//                UpgradeControl.getInstance().queryDeviceFirmwareInfo(mDeviceMac, iHealthDevicesManager.TYPE_PO3);
+        int id = view.getId();
+        if (id == R.id.btnDisconnect) {
+            mPo3Control.disconnect();
+            addLogInfo("disconnect()");
+        } else if (id == R.id.btnMeasurement) {
+            mPo3Control.startMeasure();
+            addLogInfo("startMeasure()");
+        } else if (id == R.id.btnSetTime) {//                mPo3Control.setTime();
+            addLogInfo("startMeasure()");
+        } else if (id == R.id.btnGetTime) {//                mPo3Control.getTime();
+            addLogInfo("startMeasure()");
+        } else if (id == R.id.btnGetData) {
+            mPo3Control.getHistoryData();
+            addLogInfo("getHistoryData()");
+        } else if (id == R.id.btnBattery) {
+            mPo3Control.getBattery();
+            addLogInfo("getBattery()");
+        } else if (id == R.id.btnCheckDevice) {//                UpgradeControl.getInstance().queryDeviceFirmwareInfo(mDeviceMac, iHealthDevicesManager.TYPE_PO3);
 //                addLogInfo("queryDeviceFirmwareInfo()");
-                String idps = iHealthDevicesManager.getInstance().getDevicesIDPS(mDeviceMac);
+            String idps = iHealthDevicesManager.getInstance().getDevicesIDPS(mDeviceMac);
 
-                try {
-                    JSONObject idpsObj = new JSONObject(idps);
-                    firmwareVersion = idpsObj.getString(iHealthDevicesIDPS.FIRMWAREVERSION);
-                    hardwareVersion = idpsObj.getString(iHealthDevicesIDPS.HARDWAREVERSION);
-                    bleFirmwareVersion = idpsObj.getString(iHealthDevicesIDPS.BLEFIRMWAREVERSION);
-                    modelNumber = idpsObj.getString(iHealthDevicesIDPS.MODENUMBER);
+            try {
+                JSONObject idpsObj = new JSONObject(idps);
+                firmwareVersion = idpsObj.getString(iHealthDevicesIDPS.FIRMWAREVERSION);
+                hardwareVersion = idpsObj.getString(iHealthDevicesIDPS.HARDWAREVERSION);
+                bleFirmwareVersion = idpsObj.getString(iHealthDevicesIDPS.BLEFIRMWAREVERSION);
+                modelNumber = idpsObj.getString(iHealthDevicesIDPS.MODENUMBER);
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
-                addLogInfo("queryDeviceFirmwareInfo() -->firmwareVersion:" + firmwareVersion
-                        + " hardwareVersion:" + hardwareVersion + " modelNumber:" + modelNumber);
-                mBtnCheckCloud.setEnabled(true);
-                break;
-            case R.id.btnCheckCloud:
-                UpgradeControl.getInstance().queryDeviceCloudInfo(iHealthDevicesManager.TYPE_PO3, modelNumber, hardwareVersion, firmwareVersion);
-                addLogInfo("queryDeviceCloudInfo() -->firmwareVersion:" + firmwareVersion
-                        + " hardwareVersion:" + hardwareVersion + " modelNumber:" + modelNumber);
-                break;
-            case R.id.btnDownload:
-                UpgradeControl.getInstance().downloadFirmwareFile(iHealthDevicesManager.TYPE_PO3, modelNumber, hardwareVersion, firmwareVersionCloud);
-                addLogInfo("downloadFirmwareFile() -->firmwareVersionCloud:" + firmwareVersionCloud);
-                break;
-            case R.id.btnUpgrade:
-                UpgradeControl.getInstance().startUpgrade(mDeviceMac, iHealthDevicesManager.TYPE_PO3, modelNumber, hardwareVersion,
-                        firmwareVersionCloud, modelNumber + hardwareVersion + firmwareVersionCloud);
-                addLogInfo("startUpgrade() -->firmwareVersion:" + firmwareVersion
-                        + " hardwareVersion:" + hardwareVersion + " modelNumber:" + modelNumber + " firmwareVersionCloud:" + firmwareVersionCloud);
-                mBtnStopUpgrade.setEnabled(true);
-                break;
-            case R.id.btnStopUpgrade:
-                UpgradeControl.getInstance().stopUpgrade(mDeviceMac, iHealthDevicesManager.TYPE_PO3);
-                addLogInfo("stopUpgrade() ");
-                break;
+            addLogInfo("queryDeviceFirmwareInfo() -->firmwareVersion:" + firmwareVersion
+                    + " hardwareVersion:" + hardwareVersion + " modelNumber:" + modelNumber);
+            mBtnCheckCloud.setEnabled(true);
+        } else if (id == R.id.btnCheckCloud) {
+            UpgradeControl.getInstance().queryDeviceCloudInfo(iHealthDevicesManager.TYPE_PO3, modelNumber, hardwareVersion, firmwareVersion);
+            addLogInfo("queryDeviceCloudInfo() -->firmwareVersion:" + firmwareVersion
+                    + " hardwareVersion:" + hardwareVersion + " modelNumber:" + modelNumber);
+        } else if (id == R.id.btnDownload) {
+            UpgradeControl.getInstance().downloadFirmwareFile(iHealthDevicesManager.TYPE_PO3, modelNumber, hardwareVersion, firmwareVersionCloud);
+            addLogInfo("downloadFirmwareFile() -->firmwareVersionCloud:" + firmwareVersionCloud);
+        } else if (id == R.id.btnUpgrade) {
+            UpgradeControl.getInstance().startUpgrade(mDeviceMac, iHealthDevicesManager.TYPE_PO3, modelNumber, hardwareVersion,
+                    firmwareVersionCloud, modelNumber + hardwareVersion + firmwareVersionCloud);
+            addLogInfo("startUpgrade() -->firmwareVersion:" + firmwareVersion
+                    + " hardwareVersion:" + hardwareVersion + " modelNumber:" + modelNumber + " firmwareVersionCloud:" + firmwareVersionCloud);
+            mBtnStopUpgrade.setEnabled(true);
+        } else if (id == R.id.btnStopUpgrade) {
+            UpgradeControl.getInstance().stopUpgrade(mDeviceMac, iHealthDevicesManager.TYPE_PO3);
+            addLogInfo("stopUpgrade() ");
         }
     }
 

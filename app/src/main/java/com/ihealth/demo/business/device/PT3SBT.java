@@ -25,9 +25,6 @@ import com.ihealth.demo.business.FunctionFoldActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 
 public class PT3SBT extends FunctionFoldActivity {
 
@@ -60,6 +57,20 @@ public class PT3SBT extends FunctionFoldActivity {
         /* Get bg1s controller */
         mPt3sbtControl = iHealthDevicesManager.getInstance().getPt3sbtDevice(mDeviceMac);
 
+        // 设置点击监听器
+        findViewById(R.id.btn_disconnect).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btn_settime).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btn_getbattery).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btn_setunit).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btn_getunit).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btn_get_history_count).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btn_get_history_data).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btn_delete_data).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btn_get_factory_data).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btn_query_device).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btn_query_latest).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btn_download_firmware).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btn_upgrade).setOnClickListener(this::onViewClicked);
     }
 
     private iHealthDevicesCallback miHealthDevicesCallback = new iHealthDevicesCallback() {
@@ -161,115 +172,69 @@ public class PT3SBT extends FunctionFoldActivity {
         return super.onKeyUp(keyCode, event);
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        ButterKnife.bind(this);
-    }
-
-    @OnClick({R.id.btn_disconnect,
-            R.id.btn_settime,
-            R.id.btn_getbattery,
-            R.id.btn_setunit,
-            R.id.btn_getunit,
-            R.id.btn_get_history_count,
-            R.id.btn_get_history_data,
-            R.id.btn_delete_data,
-            R.id.btn_get_factory_data,
-            R.id.btn_query_device,
-            R.id.btn_query_latest,
-            R.id.btn_download_firmware,
-            R.id.btn_upgrade})
     public void onViewClicked(View view) {
         if (mPt3sbtControl == null) {
             addLogInfo("mBg1sControl == null");
             return;
         }
         showLogLayout();
-        switch (view.getId()) {
-            case R.id.btn_disconnect:
-                mPt3sbtControl.disconnect();
-                addLogInfo("disconnect()");
-                break;
+        int id = view.getId();
+        if (id == R.id.btn_disconnect) {
+            mPt3sbtControl.disconnect();
+            addLogInfo("disconnect()");
+        } else if (id == R.id.btn_settime) {
+            mPt3sbtControl.setTime();
+            addLogInfo("setTime()");
+        } else if (id == R.id.btn_getbattery) {
+            mPt3sbtControl.getBattery();
+            addLogInfo("getBattery()");
+        } else if (id == R.id.btn_setunit) {
+            mPt3sbtControl.setUnit(Pt3sbtProfile.PT3SBT_UNIT.Centigrade);
+            addLogInfo("setUnit()");
+        } else if (id == R.id.btn_getunit) {
+            mPt3sbtControl.getUnit();
+            addLogInfo("getUnit()");
+        } else if (id == R.id.btn_get_history_count) {
+            mPt3sbtControl.getHistoryCount();
+            addLogInfo("getHistoryCount()");
+        } else if (id == R.id.btn_get_history_data) {
+            mPt3sbtControl.getHistoryData();
+            addLogInfo("getHistoryData()");
+        } else if (id == R.id.btn_delete_data) {
+            mPt3sbtControl.deleteHistory();
+            addLogInfo("deleteHistory()");
+        } else if (id == R.id.btn_get_factory_data) {
+            mPt3sbtControl.getFactoryData();
+            addLogInfo("getFactoryData()");
+        } else if (id == R.id.btn_query_device) {
+            String idps = iHealthDevicesManager.getInstance().getDevicesIDPS(mDeviceMac);
 
-            case R.id.btn_settime:
-                mPt3sbtControl.setTime();
-                addLogInfo("setTime()");
-                break;
+            try {
+                JSONObject idpsObj = new JSONObject(idps);
+                firmwareVersion = idpsObj.getString(iHealthDevicesIDPS.FIRMWAREVERSION);
+                hardwareVersion = idpsObj.getString(iHealthDevicesIDPS.HARDWAREVERSION);
+                bleFirmwareVersion = idpsObj.getString(iHealthDevicesIDPS.BLEFIRMWAREVERSION);
+                modelNumber = idpsObj.getString(iHealthDevicesIDPS.MODENUMBER);
 
-            case R.id.btn_getbattery:
-                mPt3sbtControl.getBattery();
-                addLogInfo("getBattery()");
-                break;
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
-            case R.id.btn_setunit:
-                mPt3sbtControl.setUnit(Pt3sbtProfile.PT3SBT_UNIT.Centigrade);
-                addLogInfo("setUnit()");
-                break;
-
-            case R.id.btn_getunit:
-                mPt3sbtControl.getUnit();
-                addLogInfo("getUnit()");
-                break;
-
-            case R.id.btn_get_history_count:
-                mPt3sbtControl.getHistoryCount();
-                addLogInfo("getHistoryCount()");
-                break;
-
-            case R.id.btn_get_history_data:
-                mPt3sbtControl.getHistoryData();
-                addLogInfo("getHistoryData()");
-                break;
-
-
-            case R.id.btn_delete_data:
-                mPt3sbtControl.deleteHistory();
-                addLogInfo("deleteHistory()");
-                break;
-
-            case R.id.btn_get_factory_data:
-                mPt3sbtControl.getFactoryData();
-                addLogInfo("getFactoryData()");
-                break;
-
-            case R.id.btn_query_device:
-                String idps = iHealthDevicesManager.getInstance().getDevicesIDPS(mDeviceMac);
-
-                try {
-                    JSONObject idpsObj = new JSONObject(idps);
-                    firmwareVersion = idpsObj.getString(iHealthDevicesIDPS.FIRMWAREVERSION);
-                    hardwareVersion = idpsObj.getString(iHealthDevicesIDPS.HARDWAREVERSION);
-                    bleFirmwareVersion = idpsObj.getString(iHealthDevicesIDPS.BLEFIRMWAREVERSION);
-                    modelNumber = idpsObj.getString(iHealthDevicesIDPS.MODENUMBER);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                addLogInfo("queryDeviceFirmwareInfo() -->firmwareVersion:" + firmwareVersion + " hardwareVersion:" + hardwareVersion + " modelNumber:" + modelNumber);
-                break;
-
-            case R.id.btn_query_latest:
-                UpgradeControl.getInstance().queryDeviceCloudInfo(iHealthDevicesManager.TYPE_PT3SBT, modelNumber, hardwareVersion, firmwareVersion);
-                addLogInfo("queryDeviceCloudInfo() -->firmwareVersion:" + firmwareVersion
-                        + " hardwareVersion:" + hardwareVersion + " modelNumber:" + modelNumber);
-                break;
-
-            case R.id.btn_download_firmware:
-                UpgradeControl.getInstance().downloadFirmwareFile(iHealthDevicesManager.TYPE_PT3SBT, modelNumber, hardwareVersion, firmwareVersionCloud);
-                addLogInfo("downloadFirmwareFile() -->firmwareVersionCloud:" + firmwareVersionCloud);
-                break;
-
-            case R.id.btn_upgrade:
-                UpgradeControl.getInstance().startUpgrade(mDeviceMac, iHealthDevicesManager.TYPE_PT3SBT,
-                        modelNumber,
-                        hardwareVersion,
-                        firmwareVersionCloud,
-                        modelNumber + hardwareVersion + firmwareVersionCloud);
-                addLogInfo("startOnlineUpgrade()");
-                break;
-
+            addLogInfo("queryDeviceFirmwareInfo() -->firmwareVersion:" + firmwareVersion + " hardwareVersion:" + hardwareVersion + " modelNumber:" + modelNumber);
+        } else if (id == R.id.btn_query_latest) {
+            UpgradeControl.getInstance().queryDeviceCloudInfo(iHealthDevicesManager.TYPE_PT3SBT, modelNumber, hardwareVersion, firmwareVersion);
+            addLogInfo("queryDeviceCloudInfo() -->firmwareVersion:" + firmwareVersion
+                    + " hardwareVersion:" + hardwareVersion + " modelNumber:" + modelNumber);
+        } else if (id == R.id.btn_download_firmware) {
+            UpgradeControl.getInstance().downloadFirmwareFile(iHealthDevicesManager.TYPE_PT3SBT, modelNumber, hardwareVersion, firmwareVersionCloud);
+            addLogInfo("downloadFirmwareFile() -->firmwareVersionCloud:" + firmwareVersionCloud);
+        } else if (id == R.id.btn_upgrade) {
+            UpgradeControl.getInstance().startUpgrade(mDeviceMac, iHealthDevicesManager.TYPE_PT3SBT,
+                    modelNumber,
+                    hardwareVersion,
+                    firmwareVersionCloud,
+                    modelNumber + hardwareVersion + firmwareVersionCloud);
+            addLogInfo("startOnlineUpgrade()");
         }
     }
 

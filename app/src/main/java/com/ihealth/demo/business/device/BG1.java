@@ -20,17 +20,11 @@ import com.ihealth.demo.business.FunctionFoldActivity;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 
 public class BG1 extends FunctionFoldActivity {
     private Context mContext;
 
-    @BindView(R.id.tvStartBG1)
     TextView mTvStartBG1;
-
-    @BindView(R.id.spMeasureType)
     Spinner mSpMeasureType;
 
     private static final String TAG = "BG1";
@@ -54,6 +48,10 @@ public class BG1 extends FunctionFoldActivity {
         mDeviceName = intent.getStringExtra("type");
         mBg1Control = Bg1Control.getInstance();
         mBg1Control.init(BG1.this, userName, 0x00FF1304, true);
+        
+        // 初始化视图
+        mTvStartBG1 = findViewById(R.id.tvStartBG1);
+        mSpMeasureType = findViewById(R.id.spMeasureType);
     }
     public String QRCode = "02554064554014322D1200A05542D3BACE1446CE9A961901222F00A70B46";
 //    public String QRCode = "02ABCDE67C284BA29ACDFEE6E60A2FE43EDF0C";

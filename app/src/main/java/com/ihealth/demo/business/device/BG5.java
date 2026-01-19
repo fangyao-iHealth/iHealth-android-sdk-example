@@ -20,24 +20,14 @@ import com.ihealth.communication.manager.iHealthDevicesManager;
 import com.ihealth.demo.R;
 import com.ihealth.demo.business.FunctionFoldActivity;
 
-import butterknife.BindView;
-import butterknife.OnClick;
-
 
 public class BG5 extends FunctionFoldActivity {
-    @BindView(R.id.etQRCode)
     EditText mEdQRCode;
-    @BindView(R.id.etStripType)
     EditText mEdStripType;
-    @BindView(R.id.spMeasureType)
     Spinner mSpMeasureType;
-    @BindView(R.id.etStripNum)
     EditText mEdStripNum;
-    @BindView(R.id.etOverDate)
     EditText mEdOverDate;
-    @BindView(R.id.btnMeasurement)
     Button mBtnMeasurement;
-    @BindView(R.id.btnMeasurement2)
     Button mBtnMeasurement2;
     private Context mContext;
     private static final String TAG = "BG5";
@@ -62,6 +52,31 @@ public class BG5 extends FunctionFoldActivity {
         /* Get bg5 controller */
         mBg5Control = iHealthDevicesManager.getInstance().getBg5Control(mDeviceMac);
 
+        // 初始化视图
+        mEdQRCode = findViewById(R.id.etQRCode);
+        mEdStripType = findViewById(R.id.etStripType);
+        mSpMeasureType = findViewById(R.id.spMeasureType);
+        mEdStripNum = findViewById(R.id.etStripNum);
+        mEdOverDate = findViewById(R.id.etOverDate);
+        mBtnMeasurement = findViewById(R.id.btnMeasurement);
+        mBtnMeasurement2 = findViewById(R.id.btnMeasurement2);
+        
+        // 设置点击监听器
+        findViewById(R.id.btnDisconnect).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnHoldLink).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnMeasurement).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnMeasurement2).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnBattery).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnSetUnit).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnSetUnit2).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnSetTime).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnSetBottleInfo).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnGetBottleInfo).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnSetBottleId).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnGetBottleId).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnGetIdByQR).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnGetData).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnDeleteData).setOnClickListener(this::onViewClicked);
     }
 
 
@@ -185,103 +200,83 @@ public class BG5 extends FunctionFoldActivity {
         return super.onKeyUp(keyCode, event);
     }
 
-    @OnClick({R.id.btnDisconnect, R.id.btnHoldLink, R.id.btnMeasurement, R.id.btnMeasurement2, R.id.btnBattery,
-            R.id.btnSetUnit, R.id.btnSetUnit2, R.id.btnSetTime, R.id.btnSetBottleInfo,
-            R.id.btnGetBottleInfo, R.id.btnSetBottleId, R.id.btnGetBottleId,
-            R.id.btnGetIdByQR, R.id.btnGetData, R.id.btnDeleteData})
     public void onViewClicked(View view) {
         if (mBg5Control == null) {
             addLogInfo("mBg5Control == null");
             return;
         }
         showLogLayout();
-        switch (view.getId()) {
-            case R.id.btnDisconnect:
-                mBg5Control.disconnect();
-                addLogInfo("disconnect()");
-                break;
-            case R.id.btnHoldLink:
-                mBg5Control.holdLink();
-                addLogInfo("holdLink()");
-                break;
-            case R.id.btnBattery:
-                mBg5Control.getBattery();
-                addLogInfo("getBattery()");
-                break;
-            case R.id.btnSetUnit:
-                mBg5Control.setUnit(1);
-                addLogInfo("setUnit()--> mmol/L");
-                break;
-            case R.id.btnSetUnit2:
-                mBg5Control.setUnit(2);
-                addLogInfo("setUnit()--> mg/dL");
-                break;
-            case R.id.btnSetTime:
-                mBg5Control.setTime();
-                addLogInfo("setTime()");
-                break;
-            case R.id.btnGetIdByQR:
-                String QR = mEdQRCode.getText().toString().trim();
-                String QRInfo = mBg5Control.getBottleInfoFromQR(QR);
-                addLogInfo("getBottleInfoFromQR()-->QR:" + QR + " \nQRInfo:" + QRInfo);
-                break;
-            case R.id.btnSetBottleInfo:
-                String stripType = mEdStripType.getText().toString();
-                String measureType = (String)mSpMeasureType.getSelectedItem();
-                String stripNum = mEdStripNum.getText().toString();
-                String QRCode = mEdQRCode.getText().toString();
-                String overDate = mEdOverDate.getText().toString();
+        int id = view.getId();
+        if (id == R.id.btnDisconnect) {
+            mBg5Control.disconnect();
+            addLogInfo("disconnect()");
+        } else if (id == R.id.btnHoldLink) {
+            mBg5Control.holdLink();
+            addLogInfo("holdLink()");
+        } else if (id == R.id.btnBattery) {
+            mBg5Control.getBattery();
+            addLogInfo("getBattery()");
+        } else if (id == R.id.btnSetUnit) {
+            mBg5Control.setUnit(1);
+            addLogInfo("setUnit()--> mmol/L");
+        } else if (id == R.id.btnSetUnit2) {
+            mBg5Control.setUnit(2);
+            addLogInfo("setUnit()--> mg/dL");
+        } else if (id == R.id.btnSetTime) {
+            mBg5Control.setTime();
+            addLogInfo("setTime()");
+        } else if (id == R.id.btnGetIdByQR) {
+            String QR = mEdQRCode.getText().toString().trim();
+            String QRInfo = mBg5Control.getBottleInfoFromQR(QR);
+            addLogInfo("getBottleInfoFromQR()-->QR:" + QR + " \nQRInfo:" + QRInfo);
+        } else if (id == R.id.btnSetBottleInfo) {
+            String stripType = mEdStripType.getText().toString();
+            String measureType = (String) mSpMeasureType.getSelectedItem();
+            String stripNum = mEdStripNum.getText().toString();
+            String QRCode = mEdQRCode.getText().toString();
+            String overDate = mEdOverDate.getText().toString();
 
-                try {
-                    //GOD
-                    if ("blood".equals(measureType)) {
-                        mBg5Control.setBottleMessageWithInfo(Integer.parseInt(stripType), Bg5Profile.MEASURE_BLOOD,
-                                QRCode, Integer.parseInt(stripNum), overDate);
-                    } else {
-                        mBg5Control.setBottleMessageWithInfo(Integer.parseInt(stripType),  Bg5Profile.MEASURE_CTL,
-                                QRCode, Integer.parseInt(stripNum), overDate);
-                    }
-                } catch (NumberFormatException e) {
-                    addLogInfo("NumberFormatException:  Please input correct parameters.") ;
-                    e.printStackTrace();
+            try {
+                //GOD
+                if ("blood".equals(measureType)) {
+                    mBg5Control.setBottleMessageWithInfo(Integer.parseInt(stripType), Bg5Profile.MEASURE_BLOOD,
+                            QRCode, Integer.parseInt(stripNum), overDate);
+                } else {
+                    mBg5Control.setBottleMessageWithInfo(Integer.parseInt(stripType), Bg5Profile.MEASURE_CTL,
+                            QRCode, Integer.parseInt(stripNum), overDate);
                 }
+            } catch (NumberFormatException e) {
+                addLogInfo("NumberFormatException:  Please input correct parameters.");
+                e.printStackTrace();
+            }
 
-                //GDH
+            //GDH
 //                mBg5Control.setBottleMessageWithInfo(Bg5Profile.STRIP_GDH, Bg5Profile.MEASURE_BLOOD, "", 20, "2020-1-1");
 //                addLogInfo("setBottleMessageWithInfo() --> GDH");
 
-                addLogInfo("setBottleMessageWithInfo() --> stripType:" + stripType +
-                        " measureType:" + measureType + " stripNum:" + stripNum + " QRCode:" + QRCode + " overDate:" + overDate);
-                break;
-            case R.id.btnGetBottleInfo:
-                mBg5Control.getBottleMessage();
-                addLogInfo("getBottleMessage()");
-                break;
-            case R.id.btnGetBottleId:
-                mBg5Control.getBottleId();
-                addLogInfo("getBottleId()");
-                break;
-            case R.id.btnSetBottleId:
-                mBg5Control.setBottleId(123456);
-                addLogInfo("setBottleId() -->bottleId :" + 123456);
-                break;
-            case R.id.btnMeasurement:
-                mBg5Control.startMeasure(1);
-                addLogInfo("startMeasure() --> test with blood");
-                break;
-            case R.id.btnMeasurement2:
-                mBg5Control.startMeasure(2);
-                addLogInfo("startMeasure() --> test with control liquid ");
-                break;
-
-            case R.id.btnGetData:
-                mBg5Control.getOfflineData();
-                addLogInfo("getOfflineData()");
-                break;
-            case R.id.btnDeleteData:
-                mBg5Control.deleteOfflineData();
-                addLogInfo("deleteOfflineData()");
-                break;
+            addLogInfo("setBottleMessageWithInfo() --> stripType:" + stripType +
+                    " measureType:" + measureType + " stripNum:" + stripNum + " QRCode:" + QRCode + " overDate:" + overDate);
+        } else if (id == R.id.btnGetBottleInfo) {
+            mBg5Control.getBottleMessage();
+            addLogInfo("getBottleMessage()");
+        } else if (id == R.id.btnGetBottleId) {
+            mBg5Control.getBottleId();
+            addLogInfo("getBottleId()");
+        } else if (id == R.id.btnSetBottleId) {
+            mBg5Control.setBottleId(123456);
+            addLogInfo("setBottleId() -->bottleId :" + 123456);
+        } else if (id == R.id.btnMeasurement) {
+            mBg5Control.startMeasure(1);
+            addLogInfo("startMeasure() --> test with blood");
+        } else if (id == R.id.btnMeasurement2) {
+            mBg5Control.startMeasure(2);
+            addLogInfo("startMeasure() --> test with control liquid ");
+        } else if (id == R.id.btnGetData) {
+            mBg5Control.getOfflineData();
+            addLogInfo("getOfflineData()");
+        } else if (id == R.id.btnDeleteData) {
+            mBg5Control.deleteOfflineData();
+            addLogInfo("deleteOfflineData()");
         }
     }
 

@@ -32,7 +32,7 @@
         android:divider="@color/color_black_30"
         android:dividerHeight="1dp" />
 
-    <include layout="@layout/layout_log" />
+    <include layout="@layout/layout_log" android:id="@+id/layoutLog"/>
 
 
 </LinearLayout>

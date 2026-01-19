@@ -22,8 +22,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import butterknife.OnClick;
-
 
 public class KD723 extends FunctionFoldActivity {
     private Context mContext;
@@ -49,6 +47,14 @@ public class KD723 extends FunctionFoldActivity {
         /* Get bp550bt controller */
         mBp723Control = iHealthDevicesManager.getInstance().getBp723Control(mDeviceMac);
 //        setDeviceInfo(mDeviceName, mDeviceMac);
+
+        // 设置点击监听器
+        findViewById(R.id.btnDisconnect).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btn_getFunctionInfo).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnGetData).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnSetTime).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnGetDataCount).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnDeleteData).setOnClickListener(this::onViewClicked);
     }
 
     private iHealthDevicesCallback miHealthDevicesCallback = new iHealthDevicesCallback() {
@@ -194,46 +200,33 @@ public class KD723 extends FunctionFoldActivity {
         return super.onKeyUp(keyCode, event);
     }
 
-    @OnClick({R.id.btnDisconnect, R.id.btn_getFunctionInfo, R.id.btnGetData, R.id.btnSetTime, R.id.btnGetDataCount, R.id.btnDeleteData})
     public void onViewClicked(View view) {
         if (mBp723Control == null) {
             addLogInfo("mBp926Control == null");
             return;
         }
         showLogLayout();
-        switch (view.getId()) {
-            case R.id.btnDisconnect:
-                iHealthDevicesManager.getInstance().disconnectDevice(mDeviceMac, iHealthDevicesManager.TYPE_KD723);
-                addLogInfo("disconnect()");
-                break;
-
-            case R.id.btn_getFunctionInfo:
-                mBp723Control.getFunctionInfo();
-                addLogInfo("getFunctionInformation()");
-                break;
-
-            case R.id.btnSetTime:
-                mBp723Control.setTime(DateFormat.is24HourFormat(mContext));
-                addLogInfo("setTime()");
-                break;
-
-            case R.id.btnGetDataCount:
-                mBp723Control.getMemoryCount();
-                addLogInfo("getMemoryCountWithUserID()");
-                break;
-
-            case R.id.btnGetData:
-//                mBp723Control.commandSetUser(1);
+        int id = view.getId();
+        if (id == R.id.btnDisconnect) {
+            iHealthDevicesManager.getInstance().disconnectDevice(mDeviceMac, iHealthDevicesManager.TYPE_KD723);
+            addLogInfo("disconnect()");
+        } else if (id == R.id.btn_getFunctionInfo) {
+            mBp723Control.getFunctionInfo();
+            addLogInfo("getFunctionInformation()");
+        } else if (id == R.id.btnSetTime) {
+            mBp723Control.setTime(DateFormat.is24HourFormat(mContext));
+            addLogInfo("setTime()");
+        } else if (id == R.id.btnGetDataCount) {
+            mBp723Control.getMemoryCount();
+            addLogInfo("getMemoryCountWithUserID()");
+        } else if (id == R.id.btnGetData) {//                mBp723Control.commandSetUser(1);
 //                mBp723Control.getData();
 
-                mBp723Control.getMemoryData();
-                addLogInfo("getData()");
-                break;
-
-            case R.id.btnDeleteData:
-                mBp723Control.deleteMemoryData();
-                addLogInfo("deleteHistoryData()");
-                break;
+            mBp723Control.getMemoryData();
+            addLogInfo("getData()");
+        } else if (id == R.id.btnDeleteData) {
+            mBp723Control.deleteMemoryData();
+            addLogInfo("deleteHistoryData()");
         }
     }
 }

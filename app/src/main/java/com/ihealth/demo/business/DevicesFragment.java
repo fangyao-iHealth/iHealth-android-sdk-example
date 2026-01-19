@@ -12,14 +12,13 @@ import android.widget.LinearLayout;
 import com.ec.easylibrary.dialog.IOSActionSheetDialog;
 import com.ihealth.communication.manager.iHealthDevicesManager;
 import com.ihealth.demo.R;
+import android.view.View;
+
 import com.ihealth.demo.base.BaseFragment;
 import com.ihealth.demo.business.device.BG1;
 import com.ihealth.demo.business.device.BPM1;
 import com.ihealth.demo.business.device.HS6;
-
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
+import com.ihealth.demo.databinding.FragmentDevicesBinding;
 
 /**
  * <li>DevicesFragment</li>
@@ -33,6 +32,7 @@ public class DevicesFragment extends BaseFragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    private FragmentDevicesBinding binding;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -78,6 +78,38 @@ public class DevicesFragment extends BaseFragment {
     public void initView() {
         mContext = getActivity();
         mMainActivity = (MainActivity) mContext;
+        binding = FragmentDevicesBinding.bind(mRootView);
+        
+        // 设置所有点击监听器
+        binding.llBP5.setOnClickListener(this::onViewClicked);
+        binding.llBP5S.setOnClickListener(this::onViewClicked);
+        binding.ll550BT.setOnClickListener(this::onViewClicked);
+        binding.llBP7S.setOnClickListener(this::onViewClicked);
+        binding.llBP3L.setOnClickListener(this::onViewClicked);
+        binding.llKD723.setOnClickListener(this::onViewClicked);
+        binding.llKD926.setOnClickListener(this::onViewClicked);
+        binding.llBPM1.setOnClickListener(this::onViewClicked);
+        binding.llBG1.setOnClickListener(this::onViewClicked);
+        binding.llBG1S.setOnClickListener(this::onViewClicked);
+        binding.llBG5.setOnClickListener(this::onViewClicked);
+        binding.llBG1A.setOnClickListener(this::onViewClicked);
+        binding.llBG5A.setOnClickListener(this::onViewClicked);
+        binding.llBG5S.setOnClickListener(this::onViewClicked);
+        binding.llHS2.setOnClickListener(this::onViewClicked);
+        binding.llHS2S.setOnClickListener(this::onViewClicked);
+        binding.llHS4.setOnClickListener(this::onViewClicked);
+        binding.llHS6.setOnClickListener(this::onViewClicked);
+        binding.llHS2SPRO.setOnClickListener(this::onViewClicked);
+        binding.llAM3.setOnClickListener(this::onViewClicked);
+        binding.llAM3S.setOnClickListener(this::onViewClicked);
+        binding.llAM4.setOnClickListener(this::onViewClicked);
+        binding.llAM6.setOnClickListener(this::onViewClicked);
+        binding.llTS28B.setOnClickListener(this::onViewClicked);
+        binding.llBTM.setOnClickListener(this::onViewClicked);
+        binding.llNt13b.setOnClickListener(this::onViewClicked);
+        binding.llPt3sbt.setOnClickListener(this::onViewClicked);
+        binding.llPO3M.setOnClickListener(this::onViewClicked);
+        binding.llPO1.setOnClickListener(this::onViewClicked);
     }
 
     @Override
@@ -85,182 +117,86 @@ public class DevicesFragment extends BaseFragment {
         super.onDestroyView();
     }
 
-
-    @OnClick({
-            R.id.llBP5, R.id.llBP5S, R.id.ll550BT, R.id.llBP7S, R.id.llBP3L,R.id.llKD723, R.id.llKD926, R.id.llBPM1,
-            R.id.llBG1, R.id.llBG1S, R.id.llBG5,R.id.llBG1A,R.id.llBG5A,
-            R.id.llBG5S, R.id.llHS2, R.id.llHS2S, R.id.llHS4, R.id.llHS6, R.id.llHS2SPRO,
-            R.id.llAM3, R.id.llAM3S, R.id.llAM4, R.id.llAM5, R.id.llAM6,
-            R.id.llTS28B, R.id.llBTM, R.id.ll_nt13b, R.id.ll_pt3sbt,
-            R.id.llPO3M, R.id.llPO1,
-            R.id.llECG3})
     public void onViewClicked(View view) {
         String deviceName = "";
-        switch (view.getId()) {
-            case R.id.llBP5:
-                deviceName = iHealthDevicesManager.TYPE_BP5;
-                break;
-
-            case R.id.llBP5S:
-                deviceName = iHealthDevicesManager.TYPE_BP5S;
-                break;
-
-            case R.id.ll550BT:
-                deviceName = "KN550BT";
-                break;
-
-            case R.id.llBP7S:
-                deviceName = iHealthDevicesManager.TYPE_BP7S;
-                break;
-
-            case R.id.llBP3L:
-                deviceName = iHealthDevicesManager.TYPE_BP3L;
-                break;
-
-            case R.id.llKD723:
-                deviceName = iHealthDevicesManager.TYPE_KD723;
-                break;
-
-            case R.id.llKD926:
-                deviceName = iHealthDevicesManager.TYPE_KD926;
-                break;
-
-            case R.id.llBPM1:
-                Intent intent3 = new Intent();
-                intent3.putExtra("mac", "");
-                intent3.putExtra("type", "BPM1");
-                intent3.setClass(mContext, BPM1.class);
-                startActivity(intent3);
-                break;
-
-            case R.id.llBG1:
-                Intent intent = new Intent();
-                intent.putExtra("mac", "");
-                intent.putExtra("type", "BG1");
-                intent.putExtra("username", "test@com.cn");
-                intent.setClass(mContext, BG1.class);
-                startActivity(intent);
-                return;
-
-            case R.id.llBG1S:
-                deviceName = iHealthDevicesManager.TYPE_BG1S;
-                break;
-
-            case R.id.llBG1A:
-                deviceName = iHealthDevicesManager.TYPE_BG1A;
-                break;
-
-            case R.id.llBG5A:
-                deviceName = iHealthDevicesManager.TYPE_BG5A;
-                break;
-
-            case R.id.llBG5:
-                deviceName = iHealthDevicesManager.TYPE_BG5;
-                break;
-
-            case R.id.llBG5S:
-                deviceName = iHealthDevicesManager.TYPE_BG5S;
-                break;
-
-            case R.id.llHS2:
-                deviceName = iHealthDevicesManager.TYPE_HS2;
-                break;
-
-            case R.id.llHS3:
-                deviceName = iHealthDevicesManager.TYPE_HS3;
-                break;
-
-            case R.id.llHS4:
-                deviceName = iHealthDevicesManager.TYPE_HS4;
-                break;
-
-            case R.id.llHS2S:
-                deviceName = iHealthDevicesManager.TYPE_HS2S;
-                break;
-
-            case R.id.llHS2SPRO:
-                deviceName = iHealthDevicesManager.TYPE_HS2SPRO;
-                break;
-
-            case R.id.llHS6:
-                Intent intent2 = new Intent();
-                intent2.putExtra("mac", "");
-                intent2.putExtra("type", "HS6");
-                intent2.setClass(mContext, HS6.class);
-                startActivity(intent2);
-                return;
-
-            case R.id.llAM3:
-                deviceName = iHealthDevicesManager.TYPE_AM3;
-                break;
-
-            case R.id.llAM3S:
-                deviceName = iHealthDevicesManager.TYPE_AM3S;
-                break;
-
-            case R.id.llAM4:
-                deviceName = iHealthDevicesManager.TYPE_AM4;
-                break;
-
-            case R.id.llAM5:
-                deviceName = iHealthDevicesManager.TYPE_AM5;
-                break;
-
-            case R.id.llAM6:
-                deviceName = iHealthDevicesManager.TYPE_AM6;
-                break;
-
-            case R.id.llTS28B:
-                deviceName = iHealthDevicesManager.TYPE_TS28B;
-                break;
-
-            case R.id.llBTM:
-                deviceName = "FDIR-V3";
-                break;
-
-            case R.id.ll_nt13b:
-                deviceName = iHealthDevicesManager.TYPE_NT13B;
-                break;
-
-            case R.id.llPO3M:
-                deviceName = "PO3/PO3M";
-                break;
-
-            case R.id.llPO1:
-                deviceName = "PO1";
-                break;
-
-            case R.id.ll_pt3sbt:
-                deviceName = "PT3SBT";
-                break;
-
-            case R.id.llECG3:
-                showECGDialog();
-                return;
+        int id = view.getId();
+        if (id == R.id.llBP5) {
+            deviceName = iHealthDevicesManager.TYPE_BP5;
+        } else if (id == R.id.llBP5S) {
+            deviceName = iHealthDevicesManager.TYPE_BP5S;
+        } else if (id == R.id.ll550BT) {
+            deviceName = "KN550BT";
+        } else if (id == R.id.llBP7S) {
+            deviceName = iHealthDevicesManager.TYPE_BP7S;
+        } else if (id == R.id.llBP3L) {
+            deviceName = iHealthDevicesManager.TYPE_BP3L;
+        } else if (id == R.id.llKD723) {
+            deviceName = iHealthDevicesManager.TYPE_KD723;
+        } else if (id == R.id.llKD926) {
+            deviceName = iHealthDevicesManager.TYPE_KD926;
+        } else if (id == R.id.llBPM1) {
+            Intent intent3 = new Intent();
+            intent3.putExtra("mac", "");
+            intent3.putExtra("type", "BPM1");
+            intent3.setClass(mContext, BPM1.class);
+            startActivity(intent3);
+        } else if (id == R.id.llBG1) {
+            Intent intent = new Intent();
+            intent.putExtra("mac", "");
+            intent.putExtra("type", "BG1");
+            intent.putExtra("username", "test@com.cn");
+            intent.setClass(mContext, BG1.class);
+            startActivity(intent);
+            return;
+        } else if (id == R.id.llBG1S) {
+            deviceName = iHealthDevicesManager.TYPE_BG1S;
+        } else if (id == R.id.llBG1A) {
+            deviceName = iHealthDevicesManager.TYPE_BG1A;
+        } else if (id == R.id.llBG5A) {
+            deviceName = iHealthDevicesManager.TYPE_BG5A;
+        } else if (id == R.id.llBG5) {
+            deviceName = iHealthDevicesManager.TYPE_BG5;
+        } else if (id == R.id.llBG5S) {
+            deviceName = iHealthDevicesManager.TYPE_BG5S;
+        } else if (id == R.id.llHS2) {
+            deviceName = iHealthDevicesManager.TYPE_HS2;
+        } else if (id == R.id.llHS3) {
+            deviceName = iHealthDevicesManager.TYPE_HS3;
+        } else if (id == R.id.llHS4) {
+            deviceName = iHealthDevicesManager.TYPE_HS4;
+        } else if (id == R.id.llHS2S) {
+            deviceName = iHealthDevicesManager.TYPE_HS2S;
+        } else if (id == R.id.llHS2SPRO) {
+            deviceName = iHealthDevicesManager.TYPE_HS2SPRO;
+        } else if (id == R.id.llHS6) {
+            Intent intent2 = new Intent();
+            intent2.putExtra("mac", "");
+            intent2.putExtra("type", "HS6");
+            intent2.setClass(mContext, HS6.class);
+            startActivity(intent2);
+            return;
+        } else if (id == R.id.llAM3) {
+            deviceName = iHealthDevicesManager.TYPE_AM3;
+        } else if (id == R.id.llAM3S) {
+            deviceName = iHealthDevicesManager.TYPE_AM3S;
+        } else if (id == R.id.llAM4) {
+            deviceName = iHealthDevicesManager.TYPE_AM4;
+        } else if (id == R.id.llAM6) {
+            deviceName = iHealthDevicesManager.TYPE_AM6;
+        } else if (id == R.id.llTS28B) {
+            deviceName = iHealthDevicesManager.TYPE_TS28B;
+        } else if (id == R.id.llBTM) {
+            deviceName = "FDIR-V3";
+        } else if (id == R.id.ll_nt13b) {
+            deviceName = iHealthDevicesManager.TYPE_NT13B;
+        } else if (id == R.id.llPO3M) {
+            deviceName = "PO3/PO3M";
+        } else if (id == R.id.llPO1) {
+            deviceName = "PO1";
+        } else if (id == R.id.ll_pt3sbt) {
+            deviceName = "PT3SBT";
         }
         mMainActivity.showScanFragment(deviceName, null);
     }
 
-    public void showECGDialog() {
-        new IOSActionSheetDialog.Builder(mContext)
-                .setTitle(mContext.getString(R.string.dialog_title_connect_mode))
-                //.setSheetItemList(sheetItemList)//添加item集合
-                .addSheetItem(mContext.getString(R.string.function_item_button_connect_mode_ble), "FF0098EF")
-                .addSheetItem(mContext.getString(R.string.function_item_button_connect_mode_usb), "FF0098EF")
-                .setOnItemClickListener(new IOSActionSheetDialog.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(LinearLayout parent, View view, int position) {
-                        //do something
-                        if (position == 0) {
-                            mMainActivity.showScanFragment(iHealthDevicesManager.TYPE_ECG3, null);
-                        } else {
-                            mMainActivity.showScanFragment(iHealthDevicesManager.TYPE_ECG3_USB, null);
-                        }
-                    }
-                })
-//                .setTitleHeight(57)//可选项
-//                .setTitleSize(20)
-                .build()
-                .show();
-    }
 }

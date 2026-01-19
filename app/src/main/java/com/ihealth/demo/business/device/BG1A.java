@@ -21,8 +21,6 @@ import com.ihealth.demo.business.FunctionFoldActivity;
 import java.io.IOException;
 import java.io.InputStream;
 
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 
 public class BG1A extends FunctionFoldActivity {
@@ -50,6 +48,14 @@ public class BG1A extends FunctionFoldActivity {
         /* Get bg1s controller */
         mBg1aControl = iHealthDevicesManager.getInstance().getBg1aControl(mDeviceMac);
 
+        // 设置点击监听器
+        findViewById(R.id.btnGetDeviceInfo).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnSetTime).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnSetMeasureMode).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnDisconnect).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnSetMeasureMode1).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnGetHistoryData).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnDeleteHistoryData).setOnClickListener(this::onViewClicked);
     }
 
     private iHealthDevicesCallback miHealthDevicesCallback = new iHealthDevicesCallback() {
@@ -138,55 +144,34 @@ public class BG1A extends FunctionFoldActivity {
         return super.onKeyUp(keyCode, event);
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        ButterKnife.bind(this);
-    }
-
-    @OnClick({R.id.btnGetDeviceInfo,
-            R.id.btnSetTime,
-            R.id.btnSetMeasureMode,
-            R.id.btnDisconnect,
-            R.id.btnSetMeasureMode1,
-            R.id.btnGetHistoryData,
-            R.id.btnDeleteHistoryData,
-    })
     public void onViewClicked(View view) {
         if (mBg1aControl == null) {
             addLogInfo("mBg1aControl == null");
             return;
         }
         showLogLayout();
-        switch (view.getId()) {
-            case R.id.btnGetDeviceInfo:
-                mBg1aControl.getDeviceInfo();
-                addLogInfo("getDeviceInfo()");
-                break;
-            case R.id.btnSetTime:
-                mBg1aControl.setDeviceTime(System.currentTimeMillis());
-                addLogInfo("setDeviceTime()");
-                break;
-            case R.id.btnSetMeasureMode:
-                mBg1aControl.setMeasureMode(Bg1aProfile.Bg1aModeType.BloodMode);
-                addLogInfo("setMeasureMode() mode 0 ");
-                break;
-            case R.id.btnSetMeasureMode1:
-                mBg1aControl.setMeasureMode(Bg1aProfile.Bg1aModeType.CTLMode);
-                addLogInfo("setMeasureMode() mode 1");
-                break;
-            case R.id.btnGetHistoryData:
-                mBg1aControl.getHistoryData();
-                addLogInfo("getHistoryData()");
-                break;
-            case R.id.btnDeleteHistoryData:
-                mBg1aControl.deleteHistoryData();
-                addLogInfo("deleteHistoryData()");
-                break;
-            case R.id.btnDisconnect:
-                mBg1aControl.disconnect();
-                addLogInfo("disconnect()");
-                break;
+        int id = view.getId();
+        if (id == R.id.btnGetDeviceInfo) {
+            mBg1aControl.getDeviceInfo();
+            addLogInfo("getDeviceInfo()");
+        } else if (id == R.id.btnSetTime) {
+            mBg1aControl.setDeviceTime(System.currentTimeMillis());
+            addLogInfo("setDeviceTime()");
+        } else if (id == R.id.btnSetMeasureMode) {
+            mBg1aControl.setMeasureMode(Bg1aProfile.Bg1aModeType.BloodMode);
+            addLogInfo("setMeasureMode() mode 0 ");
+        } else if (id == R.id.btnSetMeasureMode1) {
+            mBg1aControl.setMeasureMode(Bg1aProfile.Bg1aModeType.CTLMode);
+            addLogInfo("setMeasureMode() mode 1");
+        } else if (id == R.id.btnGetHistoryData) {
+            mBg1aControl.getHistoryData();
+            addLogInfo("getHistoryData()");
+        } else if (id == R.id.btnDeleteHistoryData) {
+            mBg1aControl.deleteHistoryData();
+            addLogInfo("deleteHistoryData()");
+        } else if (id == R.id.btnDisconnect) {
+            mBg1aControl.disconnect();
+            addLogInfo("disconnect()");
         }
 
     }

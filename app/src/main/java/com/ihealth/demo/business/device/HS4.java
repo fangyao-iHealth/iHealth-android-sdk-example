@@ -28,24 +28,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import butterknife.BindView;
-import butterknife.OnClick;
-
 
 public class HS4 extends FunctionFoldActivity {
-    @BindView(R.id.btnCheckDevice)
     Button mBtnCheckDevice;
-    @BindView(R.id.btnCheckCloud)
     Button mBtnCheckCloud;
-    @BindView(R.id.btnDownload)
     Button mBtnDownload;
-    @BindView(R.id.btnUpgrade)
     Button mBtnUpgrade;
-    @BindView(R.id.btnStopUpgrade)
     Button mBtnStopUpgrade;
-    @BindView(R.id.etUnitType)
     EditText mEtUnitType;
-    @BindView(R.id.etUserId)
     EditText mEtUserId;
 
 
@@ -81,6 +71,24 @@ public class HS4 extends FunctionFoldActivity {
         /* Get hs2 controller */
         mHs4Control = iHealthDevicesManager.getInstance().getHs4Control(mDeviceMac);
 
+        // 初始化视图
+        mBtnCheckDevice = findViewById(R.id.btnCheckDevice);
+        mBtnCheckCloud = findViewById(R.id.btnCheckCloud);
+        mBtnDownload = findViewById(R.id.btnDownload);
+        mBtnUpgrade = findViewById(R.id.btnUpgrade);
+        mBtnStopUpgrade = findViewById(R.id.btnStopUpgrade);
+        mEtUnitType = findViewById(R.id.etUnitType);
+        mEtUserId = findViewById(R.id.etUserId);
+        
+        // 设置点击监听器
+        findViewById(R.id.btnDisconnect).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnMeasurement).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnGetData).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnCheckDevice).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnCheckCloud).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnDownload).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnUpgrade).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnStopUpgrade).setOnClickListener(this::onViewClicked);
     }
 
     private iHealthDevicesCallback miHealthDevicesCallback = new iHealthDevicesCallback() {
@@ -300,75 +308,63 @@ public class HS4 extends FunctionFoldActivity {
     }
 
 
-    @OnClick({R.id.btnDisconnect, R.id.btnMeasurement,
-            R.id.btnGetData, R.id.btnCheckDevice, R.id.btnCheckCloud,
-            R.id.btnDownload, R.id.btnUpgrade, R.id.btnStopUpgrade})
     public void onViewClicked(View view) {
         if (mHs4Control == null) {
             addLogInfo("mHs4Control == null");
             return;
         }
         showLogLayout();
-        switch (view.getId()) {
-            case R.id.btnDisconnect:
-                mHs4Control.disconnect();
-                addLogInfo("disconnect()");
-                break;
-            case R.id.btnMeasurement:
-                String unit = mEtUnitType.getText().toString().trim();
-                String userid = mEtUserId.getText().toString().trim();
-                try {
-                    mHs4Control.measureOnline(Integer.parseInt(unit), Integer.parseInt(userid));
-                } catch (NumberFormatException e) {
-                    addLogInfo("NumberFormatException:  Please input correct parameters.") ;
-                    e.printStackTrace();
-                }
-                addLogInfo("measureOnline() -unit type:1 kg;2 lb;3 st-> unit:" + unit + " userid:" + userid);
-                break;
-            case R.id.btnGetData:
-                mHs4Control.getOfflineData();
-                addLogInfo("getOfflineData()");
-                break;
-            case R.id.btnCheckDevice:
-//                UpgradeControl.getInstance().queryDeviceFirmwareInfo(mDeviceMac, iHealthDevicesManager.TYPE_HS4);
+        int id = view.getId();
+        if (id == R.id.btnDisconnect) {
+            mHs4Control.disconnect();
+            addLogInfo("disconnect()");
+        } else if (id == R.id.btnMeasurement) {
+            String unit = mEtUnitType.getText().toString().trim();
+            String userid = mEtUserId.getText().toString().trim();
+            try {
+                mHs4Control.measureOnline(Integer.parseInt(unit), Integer.parseInt(userid));
+            } catch (NumberFormatException e) {
+                addLogInfo("NumberFormatException:  Please input correct parameters.");
+                e.printStackTrace();
+            }
+            addLogInfo("measureOnline() -unit type:1 kg;2 lb;3 st-> unit:" + unit + " userid:" + userid);
+        } else if (id == R.id.btnGetData) {
+            mHs4Control.getOfflineData();
+            addLogInfo("getOfflineData()");
+        } else if (id == R.id.btnCheckDevice) {//                UpgradeControl.getInstance().queryDeviceFirmwareInfo(mDeviceMac, iHealthDevicesManager.TYPE_HS4);
 //                addLogInfo("queryDeviceFirmwareInfo()");
-                String idps = iHealthDevicesManager.getInstance().getDevicesIDPS(mDeviceMac);
+            String idps = iHealthDevicesManager.getInstance().getDevicesIDPS(mDeviceMac);
 
-                try {
-                    JSONObject idpsObj = new JSONObject(idps);
-                    firmwareVersion = idpsObj.getString(iHealthDevicesIDPS.FIRMWAREVERSION);
-                    hardwareVersion = idpsObj.getString(iHealthDevicesIDPS.HARDWAREVERSION);
-                    bleFirmwareVersion = idpsObj.getString(iHealthDevicesIDPS.BLEFIRMWAREVERSION);
-                    modelNumber = idpsObj.getString(iHealthDevicesIDPS.MODENUMBER);
+            try {
+                JSONObject idpsObj = new JSONObject(idps);
+                firmwareVersion = idpsObj.getString(iHealthDevicesIDPS.FIRMWAREVERSION);
+                hardwareVersion = idpsObj.getString(iHealthDevicesIDPS.HARDWAREVERSION);
+                bleFirmwareVersion = idpsObj.getString(iHealthDevicesIDPS.BLEFIRMWAREVERSION);
+                modelNumber = idpsObj.getString(iHealthDevicesIDPS.MODENUMBER);
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
-                addLogInfo("queryDeviceFirmwareInfo() -->firmwareVersion:" + firmwareVersion
-                        + " hardwareVersion:" + hardwareVersion + " modelNumber:" + modelNumber);
-                mBtnCheckCloud.setEnabled(true);
-                break;
-            case R.id.btnCheckCloud:
-                UpgradeControl.getInstance().queryDeviceCloudInfo(iHealthDevicesManager.TYPE_HS4, modelNumber, hardwareVersion, firmwareVersion);
-                addLogInfo("queryDeviceCloudInfo() -->firmwareVersion:" + firmwareVersion
-                        + " hardwareVersion:" + hardwareVersion + " modelNumber:" + modelNumber);
-                break;
-            case R.id.btnDownload:
-                UpgradeControl.getInstance().downloadFirmwareFile(iHealthDevicesManager.TYPE_HS4, modelNumber, hardwareVersion, firmwareVersionCloud);
-                addLogInfo("downloadFirmwareFile() -->firmwareVersionCloud:" + firmwareVersionCloud);
-                break;
-            case R.id.btnUpgrade:
-                UpgradeControl.getInstance().startUpgrade(mDeviceMac, iHealthDevicesManager.TYPE_HS4, modelNumber, hardwareVersion,
-                        firmwareVersionCloud, modelNumber + hardwareVersion + firmwareVersionCloud);
-                addLogInfo("startUpgrade() -->firmwareVersion:" + firmwareVersion
-                        + " hardwareVersion:" + hardwareVersion + " modelNumber:" + modelNumber + " firmwareVersionCloud:" + firmwareVersionCloud);
-                mBtnStopUpgrade.setEnabled(true);
-                break;
-            case R.id.btnStopUpgrade:
-                UpgradeControl.getInstance().stopUpgrade(mDeviceMac, iHealthDevicesManager.TYPE_HS4);
-                addLogInfo("stopUpgrade() ");
-                break;
+            addLogInfo("queryDeviceFirmwareInfo() -->firmwareVersion:" + firmwareVersion
+                    + " hardwareVersion:" + hardwareVersion + " modelNumber:" + modelNumber);
+            mBtnCheckCloud.setEnabled(true);
+        } else if (id == R.id.btnCheckCloud) {
+            UpgradeControl.getInstance().queryDeviceCloudInfo(iHealthDevicesManager.TYPE_HS4, modelNumber, hardwareVersion, firmwareVersion);
+            addLogInfo("queryDeviceCloudInfo() -->firmwareVersion:" + firmwareVersion
+                    + " hardwareVersion:" + hardwareVersion + " modelNumber:" + modelNumber);
+        } else if (id == R.id.btnDownload) {
+            UpgradeControl.getInstance().downloadFirmwareFile(iHealthDevicesManager.TYPE_HS4, modelNumber, hardwareVersion, firmwareVersionCloud);
+            addLogInfo("downloadFirmwareFile() -->firmwareVersionCloud:" + firmwareVersionCloud);
+        } else if (id == R.id.btnUpgrade) {
+            UpgradeControl.getInstance().startUpgrade(mDeviceMac, iHealthDevicesManager.TYPE_HS4, modelNumber, hardwareVersion,
+                    firmwareVersionCloud, modelNumber + hardwareVersion + firmwareVersionCloud);
+            addLogInfo("startUpgrade() -->firmwareVersion:" + firmwareVersion
+                    + " hardwareVersion:" + hardwareVersion + " modelNumber:" + modelNumber + " firmwareVersionCloud:" + firmwareVersionCloud);
+            mBtnStopUpgrade.setEnabled(true);
+        } else if (id == R.id.btnStopUpgrade) {
+            UpgradeControl.getInstance().stopUpgrade(mDeviceMac, iHealthDevicesManager.TYPE_HS4);
+            addLogInfo("stopUpgrade() ");
         }
     }
 }

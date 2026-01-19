@@ -25,9 +25,6 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import butterknife.BindView;
-import butterknife.OnClick;
-
 import static com.ihealth.communication.control.BtmControl.FUNCTION_TARGET_OFFLINE;
 import static com.ihealth.communication.control.BtmControl.MEASURING_TARGET_BODY;
 import static com.ihealth.communication.control.BtmControl.MEASURING_TARGET_OBJECT;
@@ -60,6 +57,9 @@ public class TS28B extends FunctionFoldActivity {
         /* Get ts28b controller */
         mTS28BControl = iHealthDevicesManager.getInstance().getTS28BControl(mDeviceMac);
 
+        // 设置点击监听器
+        findViewById(R.id.btnDisconnect).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnGetData).setOnClickListener(this::onViewClicked);
     }
 
 
@@ -159,22 +159,19 @@ public class TS28B extends FunctionFoldActivity {
     }
 
 
-    @OnClick({R.id.btnDisconnect, R.id.btnGetData})
     public void onViewClicked(View view) {
         if (mTS28BControl == null) {
             addLogInfo("mTS28BControl == null");
             return;
         }
         showLogLayout();
-        switch (view.getId()) {
-            case R.id.btnDisconnect:
-                mTS28BControl.disconnect();
-                addLogInfo("disconnect()");
-                break;
-            case R.id.btnGetData:
-                mTS28BControl.getMeasurement();
-                addLogInfo("getMeasurement()");
-                break;
+        int id = view.getId();
+        if (id == R.id.btnDisconnect) {
+            mTS28BControl.disconnect();
+            addLogInfo("disconnect()");
+        } else if (id == R.id.btnGetData) {
+            mTS28BControl.getMeasurement();
+            addLogInfo("getMeasurement()");
         }
     }
 

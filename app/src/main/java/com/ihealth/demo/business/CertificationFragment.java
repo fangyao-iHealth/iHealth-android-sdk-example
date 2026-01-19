@@ -4,16 +4,16 @@ import android.content.Context;
 import android.os.Bundle;
 import android.widget.Button;
 
+import android.view.View;
+
 import com.ihealth.communication.manager.iHealthDevicesManager;
 import com.ihealth.communication.utils.Log;
 import com.ihealth.demo.R;
 import com.ihealth.demo.base.BaseFragment;
+import com.ihealth.demo.databinding.FragmentCertificationBinding;
 
 import java.io.IOException;
 import java.io.InputStream;
-
-import butterknife.BindView;
-import butterknife.OnClick;
 
 import static android.content.ContentValues.TAG;
 
@@ -37,9 +37,7 @@ public class CertificationFragment extends BaseFragment {
     private String mParam2;
 
     private Context mContext;
-
-    @BindView(R.id.btnCertification)
-    Button mBtnCertification;
+    private FragmentCertificationBinding binding;
     MainActivity mMainActivity;
 
     @Override
@@ -51,6 +49,13 @@ public class CertificationFragment extends BaseFragment {
     public void initView() {
         mContext = getActivity();
         mMainActivity = (MainActivity) mContext;
+        binding = FragmentCertificationBinding.bind(mRootView);
+        binding.btnCertification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onViewClicked();
+            }
+        });
     }
 
     public CertificationFragment() { }
@@ -73,7 +78,6 @@ public class CertificationFragment extends BaseFragment {
         }
     }
 
-    @OnClick(R.id.btnCertification)
     public void onViewClicked() {
         try {
             //Please apply for authorization on the server and download the. PEM file,

@@ -26,22 +26,13 @@ import com.ihealth.demo.business.FunctionFoldActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 
 public class HS2S extends FunctionFoldActivity {
 
-    @BindView(R.id.btnStopUpgrade)
     Button mBtnStopUpgrade;
-    @BindView(R.id.btnCheckCloud)
     Button mBtnCheckCloud;
-    @BindView(R.id.btnCheckDevice)
     Button mBtnCheckDevice;
-    @BindView(R.id.btnDownload)
     Button mBtnDownload;
-    @BindView(R.id.btnUpgrade)
     Button mBtnUpgrade;
     private Context mContext;
     private static final String TAG = "HS2S";
@@ -75,6 +66,41 @@ public class HS2S extends FunctionFoldActivity {
         /* Get hs2s controller */
         mHs2sControl = iHealthDevicesManager.getInstance().getHs2sControl(mDeviceMac);
 
+        // 初始化视图
+        mBtnStopUpgrade = findViewById(R.id.btnStopUpgrade);
+        mBtnCheckCloud = findViewById(R.id.btnCheckCloud);
+        mBtnCheckDevice = findViewById(R.id.btnCheckDevice);
+        mBtnDownload = findViewById(R.id.btnDownload);
+        mBtnUpgrade = findViewById(R.id.btnUpgrade);
+        
+        // 设置点击监听器
+        findViewById(R.id.btnDisconnect).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnIDPS).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnGetDeviceInfo).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnBattery).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnRestore).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnSetUnit).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnSetUnit2).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnSetUnit3).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnSetUserInfo).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnGetUserInfo).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnDeleteUserInfo).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnSpecifyUserOnline).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnSpecifyUserTourist).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnGetOfflineDataNum).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnGetOfflineData).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnDeleteOfflineData).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnStartHeartRateMode).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnStopHeartRateMode).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnGetAnonymousDataNum).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnGetAnonymousData).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnDeleteAnonymousData).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnCheckDevice).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnCheckCloud).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnDownload).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnUpgrade).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.imgStopUpGrade).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnStopUpgrade).setOnClickListener(this::onViewClicked);
     }
 
     private iHealthDevicesCallback miHealthDevicesCallback = new iHealthDevicesCallback() {
@@ -184,213 +210,174 @@ public class HS2S extends FunctionFoldActivity {
         return super.onKeyUp(keyCode, event);
     }
 
-    @OnClick({R.id.btnDisconnect, R.id.btnIDPS, R.id.btnGetDeviceInfo, R.id.btnBattery,
-            R.id.btnRestore, R.id.btnSetUnit, R.id.btnSetUnit2, R.id.btnSetUnit3,
-            R.id.btnSetUserInfo, R.id.btnGetUserInfo, R.id.btnDeleteUserInfo,
-            R.id.btnSpecifyUserOnline, R.id.btnSpecifyUserTourist,
-            R.id.btnGetOfflineDataNum, R.id.btnGetOfflineData, R.id.btnDeleteOfflineData,
-            R.id.btnStartHeartRateMode, R.id.btnStopHeartRateMode,
-            R.id.btnGetAnonymousDataNum, R.id.btnGetAnonymousData, R.id.btnDeleteAnonymousData,
-
-            R.id.btnCheckDevice, R.id.btnCheckCloud, R.id.btnDownload, R.id.btnUpgrade, R.id.imgStopUpGrade, R.id.btnStopUpgrade})
     public void onViewClicked(View view) {
         showLogLayout();
-        switch (view.getId()) {
-            case R.id.btnDisconnect:
-                if (mHs2sControl != null) {
-                    mHs2sControl.disconnect();
-                    addLogInfo("disconnect()");
-                }
-                break;
-            case R.id.btnIDPS:
-                if (mHs2sControl != null) {
-                    String idps = mHs2sControl.getIDPS();
-                    try {
-                        JSONObject idpsObj = new JSONObject(idps);
-                        firmwareVersion = idpsObj.optString(iHealthDevicesIDPS.FIRMWAREVERSION);
-                        hardwareVersion = idpsObj.optString(iHealthDevicesIDPS.HARDWAREVERSION);
-                        bleFirmwareVersion = idpsObj.optString(iHealthDevicesIDPS.BLEFIRMWAREVERSION);
-                        modelNumber = idpsObj.optString(iHealthDevicesIDPS.MODENUMBER);
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    addLogInfo("getIDPS() -->firmwareVersion:" + firmwareVersion
-                            + " hardwareVersion:" + hardwareVersion + " modelNumber:" + modelNumber);
-                }
-
-                break;
-            case R.id.btnGetDeviceInfo:
-                if (mHs2sControl != null) {
-                    mHs2sControl.getDeviceInfo();
-                    addLogInfo("getDeviceInfo()");
-                }
-
-                if (mHs2sControl != null) {
-                    String idps = mHs2sControl.getIDPS();
-                    try {
-                        JSONObject idpsObj = new JSONObject(idps);
-                        firmwareVersion = idpsObj.optString(iHealthDevicesIDPS.FIRMWAREVERSION);
-                        hardwareVersion = idpsObj.optString(iHealthDevicesIDPS.HARDWAREVERSION);
-                        bleFirmwareVersion = idpsObj.optString(iHealthDevicesIDPS.BLEFIRMWAREVERSION);
-                        modelNumber = idpsObj.optString(iHealthDevicesIDPS.MODENUMBER);
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-//                    addLogInfo("getIDPS() -->firmwareVersion:" + firmwareVersion
-//                            + " hardwareVersion:" + hardwareVersion + " modelNumber:" + modelNumber);
-                }
-                break;
-            case R.id.btnBattery:
-                if (mHs2sControl != null) {
-                    mHs2sControl.getBattery();
-                    addLogInfo("getBattery()");
-                }
-                break;
-            case R.id.btnRestore:
-                if (mHs2sControl != null) {
-                    mHs2sControl.restoreFactorySettings();
-                    addLogInfo("restoreFactorySettings()");
-                }
-                break;
-            case R.id.btnSetUnit:
-                if (mHs2sControl != null) {
-                    mHs2sControl.setUnit(Hs2sProfile.UNIT_KG);
-                    addLogInfo("setUnit()  UNIT_KG");
-                }
-                break;
-            case R.id.btnSetUnit2:
-                if (mHs2sControl != null) {
-                    mHs2sControl.setUnit(Hs2sProfile.UNIT_LB);
-                    addLogInfo("setUnit()  UNIT_LB");
-                }
-                break;
-            case R.id.btnSetUnit3:
-                if (mHs2sControl != null) {
-                    mHs2sControl.setUnit(Hs2sProfile.UNIT_ST);
-                    addLogInfo("Hs2sProfile()  UNIT_ST");
-                }
-                break;
-            case R.id.btnSetUserInfo:
-                if (mHs2sControl != null) {
-                    mHs2sControl.createOrUpdateUserInfo("abcdef1234567890", (float) 71, 1, 28, 176, 1, 0);
-                    addLogInfo("createOrUpdateUserInfo()");
-                }
-                break;
-            case R.id.btnGetUserInfo:
-                if (mHs2sControl != null) {
-                    mHs2sControl.getUserInfo();
-                    addLogInfo("getUserInfo()");
-                }
-                break;
-            case R.id.btnDeleteUserInfo:
-                if (mHs2sControl != null) {
-                    mHs2sControl.deleteUserInfo("abcdef1234567890");
-                    addLogInfo("deleteUserInfo()");
-                }
-
-                break;
-            case R.id.btnSpecifyUserOnline:
-                if (mHs2sControl != null) {
-                    mHs2sControl.specifyOnlineUsers("abcdef1234567890", (float) 71, 1, 28, 176, 1, 0);
-                    addLogInfo("specifyOnlineUsers()");
-                }
-                break;
-            case R.id.btnSpecifyUserTourist:
-                if (mHs2sControl != null) {
-                    mHs2sControl.specifyTouristUsers();
-                    addLogInfo("specifyTouristUsers()");
-                }
-                break;
-            case R.id.btnGetOfflineDataNum:
-                if (mHs2sControl != null) {
-                    mHs2sControl.getOfflineDataCount("abcdef1234567890");
-                    addLogInfo("getOfflineDataCount()");
-                }
-                break;
-            case R.id.btnGetOfflineData:
-                if (mHs2sControl != null) {
-                    mHs2sControl.getOfflineData("abcdef1234567890");
-                    addLogInfo("getOfflineData()");
-                }
-                break;
-            case R.id.btnDeleteOfflineData:
-                if (mHs2sControl != null) {
-                    mHs2sControl.deleteOfflineData("abcdef1234567890");
-                    addLogInfo("deleteOfflineData()");
-                }
-                break;
-            case R.id.btnGetAnonymousDataNum:
-                if (mHs2sControl != null) {
-                    mHs2sControl.getAnonymousDataCount();
-                    addLogInfo("getAnonymousDataCount()");
-                }
-                break;
-            case R.id.btnGetAnonymousData:
-                if (mHs2sControl != null) {
-                    mHs2sControl.getAnonymousData();
-                    addLogInfo("getAnonymousData()");
-                }
-                break;
-            case R.id.btnDeleteAnonymousData:
-                if (mHs2sControl != null) {
-                    mHs2sControl.deleteAnonymousData();
-                    addLogInfo("deleteAnonymousData()");
-                }
-                break;
-            case R.id.btnCheckDevice:
-                String idps = iHealthDevicesManager.getInstance().getDevicesIDPS(mDeviceMac);
-
+        int id = view.getId();
+        if (id == R.id.btnDisconnect) {
+            if (mHs2sControl != null) {
+                mHs2sControl.disconnect();
+                addLogInfo("disconnect()");
+            }
+        } else if (id == R.id.btnIDPS) {
+            if (mHs2sControl != null) {
+                String idps = mHs2sControl.getIDPS();
                 try {
                     JSONObject idpsObj = new JSONObject(idps);
-                    firmwareVersion = idpsObj.getString(iHealthDevicesIDPS.FIRMWAREVERSION);
-                    hardwareVersion = idpsObj.getString(iHealthDevicesIDPS.HARDWAREVERSION);
-                    bleFirmwareVersion = idpsObj.getString(iHealthDevicesIDPS.BLEFIRMWAREVERSION);
-                    modelNumber = idpsObj.getString(iHealthDevicesIDPS.MODENUMBER);
+                    firmwareVersion = idpsObj.optString(iHealthDevicesIDPS.FIRMWAREVERSION);
+                    hardwareVersion = idpsObj.optString(iHealthDevicesIDPS.HARDWAREVERSION);
+                    bleFirmwareVersion = idpsObj.optString(iHealthDevicesIDPS.BLEFIRMWAREVERSION);
+                    modelNumber = idpsObj.optString(iHealthDevicesIDPS.MODENUMBER);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-                addLogInfo("queryDeviceFirmwareInfo() -->firmwareVersion:" + firmwareVersion
+                addLogInfo("getIDPS() -->firmwareVersion:" + firmwareVersion
                         + " hardwareVersion:" + hardwareVersion + " modelNumber:" + modelNumber);
-                mBtnCheckCloud.setEnabled(true);
-                break;
-            case R.id.btnCheckCloud:
-                UpgradeControl.getInstance().queryDeviceCloudInfo(iHealthDevicesManager.TYPE_HS2S, modelNumber, hardwareVersion, firmwareVersion);
-                addLogInfo("queryDeviceCloudInfo() -->firmwareVersion:" + firmwareVersion
-                        + " hardwareVersion:" + hardwareVersion + " modelNumber:" + modelNumber);
-                break;
-            case R.id.btnDownload:
-                UpgradeControl.getInstance().downloadFirmwareFile(iHealthDevicesManager.TYPE_HS2S, modelNumber, hardwareVersion, firmwareVersionCloud);
-                addLogInfo("downloadFirmwareFile() -->firmwareVersionCloud:" + firmwareVersionCloud);
-                break;
-            case R.id.btnUpgrade:
-                UpgradeControl.getInstance().startUpgrade(mDeviceMac, iHealthDevicesManager.TYPE_HS2S, modelNumber, hardwareVersion,
-                        firmwareVersionCloud, modelNumber + hardwareVersion + firmwareVersionCloud);
-                addLogInfo("startUpgrade() -->firmwareVersion:" + firmwareVersion
-                        + " hardwareVersion:" + hardwareVersion + " modelNumber:" + modelNumber + " firmwareVersionCloud:" + firmwareVersionCloud);
-                mBtnStopUpgrade.setEnabled(true);
-                break;
-            case R.id.btnStopUpgrade:
-                UpgradeControl.getInstance().stopUpgrade(mDeviceMac, iHealthDevicesManager.TYPE_HS2S);
-                addLogInfo("stopUpgrade() ");
-                break;
+            }
+        } else if (id == R.id.btnGetDeviceInfo) {
+            if (mHs2sControl != null) {
+                mHs2sControl.getDeviceInfo();
+                addLogInfo("getDeviceInfo()");
+            }
 
-            case R.id.btnStartHeartRateMode:
-                if (mHs2sControl != null) {
-                    mHs2sControl.startHeartRateMode();
-                    addLogInfo("startHeartRateMode() ");
-                }
-                break;
+            if (mHs2sControl != null) {
+                String idps = mHs2sControl.getIDPS();
+                try {
+                    JSONObject idpsObj = new JSONObject(idps);
+                    firmwareVersion = idpsObj.optString(iHealthDevicesIDPS.FIRMWAREVERSION);
+                    hardwareVersion = idpsObj.optString(iHealthDevicesIDPS.HARDWAREVERSION);
+                    bleFirmwareVersion = idpsObj.optString(iHealthDevicesIDPS.BLEFIRMWAREVERSION);
+                    modelNumber = idpsObj.optString(iHealthDevicesIDPS.MODENUMBER);
 
-            case R.id.btnStopHeartRateMode:
-                if (mHs2sControl != null) {
-                    mHs2sControl.setBleLight();
-                    addLogInfo("setBleLight() ");
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-                break;
+//                    addLogInfo("getIDPS() -->firmwareVersion:" + firmwareVersion
+//                            + " hardwareVersion:" + hardwareVersion + " modelNumber:" + modelNumber);
+            }
+        } else if (id == R.id.btnBattery) {
+            if (mHs2sControl != null) {
+                mHs2sControl.getBattery();
+                addLogInfo("getBattery()");
+            }
+        } else if (id == R.id.btnRestore) {
+            if (mHs2sControl != null) {
+                mHs2sControl.restoreFactorySettings();
+                addLogInfo("restoreFactorySettings()");
+            }
+        } else if (id == R.id.btnSetUnit) {
+            if (mHs2sControl != null) {
+                mHs2sControl.setUnit(Hs2sProfile.UNIT_KG);
+                addLogInfo("setUnit()  UNIT_KG");
+            }
+        } else if (id == R.id.btnSetUnit2) {
+            if (mHs2sControl != null) {
+                mHs2sControl.setUnit(Hs2sProfile.UNIT_LB);
+                addLogInfo("setUnit()  UNIT_LB");
+            }
+        } else if (id == R.id.btnSetUnit3) {
+            if (mHs2sControl != null) {
+                mHs2sControl.setUnit(Hs2sProfile.UNIT_ST);
+                addLogInfo("Hs2sProfile()  UNIT_ST");
+            }
+        } else if (id == R.id.btnSetUserInfo) {
+            if (mHs2sControl != null) {
+                mHs2sControl.createOrUpdateUserInfo("abcdef1234567890", (float) 71, 1, 28, 176, 1, 0);
+                addLogInfo("createOrUpdateUserInfo()");
+            }
+        } else if (id == R.id.btnGetUserInfo) {
+            if (mHs2sControl != null) {
+                mHs2sControl.getUserInfo();
+                addLogInfo("getUserInfo()");
+            }
+        } else if (id == R.id.btnDeleteUserInfo) {
+            if (mHs2sControl != null) {
+                mHs2sControl.deleteUserInfo("abcdef1234567890");
+                addLogInfo("deleteUserInfo()");
+            }
+        } else if (id == R.id.btnSpecifyUserOnline) {
+            if (mHs2sControl != null) {
+                mHs2sControl.specifyOnlineUsers("abcdef1234567890", (float) 71, 1, 28, 176, 1, 0);
+                addLogInfo("specifyOnlineUsers()");
+            }
+        } else if (id == R.id.btnSpecifyUserTourist) {
+            if (mHs2sControl != null) {
+                mHs2sControl.specifyTouristUsers();
+                addLogInfo("specifyTouristUsers()");
+            }
+        } else if (id == R.id.btnGetOfflineDataNum) {
+            if (mHs2sControl != null) {
+                mHs2sControl.getOfflineDataCount("abcdef1234567890");
+                addLogInfo("getOfflineDataCount()");
+            }
+        } else if (id == R.id.btnGetOfflineData) {
+            if (mHs2sControl != null) {
+                mHs2sControl.getOfflineData("abcdef1234567890");
+                addLogInfo("getOfflineData()");
+            }
+        } else if (id == R.id.btnDeleteOfflineData) {
+            if (mHs2sControl != null) {
+                mHs2sControl.deleteOfflineData("abcdef1234567890");
+                addLogInfo("deleteOfflineData()");
+            }
+        } else if (id == R.id.btnGetAnonymousDataNum) {
+            if (mHs2sControl != null) {
+                mHs2sControl.getAnonymousDataCount();
+                addLogInfo("getAnonymousDataCount()");
+            }
+        } else if (id == R.id.btnGetAnonymousData) {
+            if (mHs2sControl != null) {
+                mHs2sControl.getAnonymousData();
+                addLogInfo("getAnonymousData()");
+            }
+        } else if (id == R.id.btnDeleteAnonymousData) {
+            if (mHs2sControl != null) {
+                mHs2sControl.deleteAnonymousData();
+                addLogInfo("deleteAnonymousData()");
+            }
+        } else if (id == R.id.btnCheckDevice) {
+            String idps = iHealthDevicesManager.getInstance().getDevicesIDPS(mDeviceMac);
+
+            try {
+                JSONObject idpsObj = new JSONObject(idps);
+                firmwareVersion = idpsObj.getString(iHealthDevicesIDPS.FIRMWAREVERSION);
+                hardwareVersion = idpsObj.getString(iHealthDevicesIDPS.HARDWAREVERSION);
+                bleFirmwareVersion = idpsObj.getString(iHealthDevicesIDPS.BLEFIRMWAREVERSION);
+                modelNumber = idpsObj.getString(iHealthDevicesIDPS.MODENUMBER);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            addLogInfo("queryDeviceFirmwareInfo() -->firmwareVersion:" + firmwareVersion
+                    + " hardwareVersion:" + hardwareVersion + " modelNumber:" + modelNumber);
+            mBtnCheckCloud.setEnabled(true);
+        } else if (id == R.id.btnCheckCloud) {
+            UpgradeControl.getInstance().queryDeviceCloudInfo(iHealthDevicesManager.TYPE_HS2S, modelNumber, hardwareVersion, firmwareVersion);
+            addLogInfo("queryDeviceCloudInfo() -->firmwareVersion:" + firmwareVersion
+                    + " hardwareVersion:" + hardwareVersion + " modelNumber:" + modelNumber);
+        } else if (id == R.id.btnDownload) {
+            UpgradeControl.getInstance().downloadFirmwareFile(iHealthDevicesManager.TYPE_HS2S, modelNumber, hardwareVersion, firmwareVersionCloud);
+            addLogInfo("downloadFirmwareFile() -->firmwareVersionCloud:" + firmwareVersionCloud);
+        } else if (id == R.id.btnUpgrade) {
+            UpgradeControl.getInstance().startUpgrade(mDeviceMac, iHealthDevicesManager.TYPE_HS2S, modelNumber, hardwareVersion,
+                    firmwareVersionCloud, modelNumber + hardwareVersion + firmwareVersionCloud);
+            addLogInfo("startUpgrade() -->firmwareVersion:" + firmwareVersion
+                    + " hardwareVersion:" + hardwareVersion + " modelNumber:" + modelNumber + " firmwareVersionCloud:" + firmwareVersionCloud);
+            mBtnStopUpgrade.setEnabled(true);
+        } else if (id == R.id.btnStopUpgrade) {
+            UpgradeControl.getInstance().stopUpgrade(mDeviceMac, iHealthDevicesManager.TYPE_HS2S);
+            addLogInfo("stopUpgrade() ");
+        } else if (id == R.id.btnStartHeartRateMode) {
+            if (mHs2sControl != null) {
+                mHs2sControl.startHeartRateMode();
+                addLogInfo("startHeartRateMode() ");
+            }
+        } else if (id == R.id.btnStopHeartRateMode) {
+            if (mHs2sControl != null) {
+                mHs2sControl.setBleLight();
+                addLogInfo("setBleLight() ");
+            }
         }
     }
 }

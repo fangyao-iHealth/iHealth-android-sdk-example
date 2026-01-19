@@ -21,8 +21,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import butterknife.OnClick;
-
 /**
  * bp3l activity
  */
@@ -50,6 +48,12 @@ public class BP3L extends FunctionFoldActivity {
         /* Get bp3 controller */
         mBp3lControl = iHealthDevicesManager.getInstance().getBp3lControl(mDeviceMac);
 //        setDeviceInfo(mDeviceName, mDeviceMac);
+
+        // 设置点击监听器
+        findViewById(R.id.btnDisconnect).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnMeasurement).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnStopMeasurement).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnBattery).setOnClickListener(this::onViewClicked);
     }
 
     private iHealthDevicesCallback miHealthDevicesCallback = new iHealthDevicesCallback() {
@@ -226,30 +230,25 @@ public class BP3L extends FunctionFoldActivity {
         }
     };
 
-    @OnClick({R.id.btnDisconnect, R.id.btnMeasurement, R.id.btnStopMeasurement, R.id.btnBattery})
     public void onViewClicked(View view) {
         if (mBp3lControl == null) {
             addLogInfo("mBp3lControl == null");
             return;
         }
         showLogLayout();
-        switch (view.getId()) {
-            case R.id.btnDisconnect:
-                mBp3lControl.disconnect();
-                addLogInfo("disconnect()");
-                break;
-            case R.id.btnMeasurement:
-                mBp3lControl.startMeasure();
-                addLogInfo("startMeasure()");
-                break;
-            case R.id.btnStopMeasurement:
-                mBp3lControl.interruptMeasure();
-                addLogInfo("interruptMeasure()");
-                break;
-            case R.id.btnBattery:
-                mBp3lControl.getBattery();
-                addLogInfo("getBattery()");
-                break;
+        int id = view.getId();
+        if (id == R.id.btnDisconnect) {
+            mBp3lControl.disconnect();
+            addLogInfo("disconnect()");
+        } else if (id == R.id.btnMeasurement) {
+            mBp3lControl.startMeasure();
+            addLogInfo("startMeasure()");
+        } else if (id == R.id.btnStopMeasurement) {
+            mBp3lControl.interruptMeasure();
+            addLogInfo("interruptMeasure()");
+        } else if (id == R.id.btnBattery) {
+            mBp3lControl.getBattery();
+            addLogInfo("getBattery()");
         }
     }
 

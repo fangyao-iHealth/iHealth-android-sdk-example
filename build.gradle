@@ -8,9 +8,8 @@ buildscript {
         maven { url 'https://jitpack.io' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.0.1'
+        classpath 'com.android.tools.build:gradle:8.9.1'
         classpath 'org.greenrobot:greendao-gradle-plugin:3.2.2'
-        classpath 'com.jakewharton:butterknife-gradle-plugin:10.2.3'
     }
 }
 

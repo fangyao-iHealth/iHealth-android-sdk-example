@@ -31,24 +31,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.BindView;
-
 
 public class AM6 extends FunctionFoldActivity {
 
-    @BindView(R.id.rv_am6_api)
     public RecyclerView rvAPIs;
-
-    @BindView(R.id.et_type)
     public EditText etType;
-
-    @BindView(R.id.et_status)
     public EditText etStatus;
-
-    @BindView(R.id.et_title)
     public EditText etTitle;
-
-    @BindView(R.id.et_content)
     public EditText etContent;
 
     private Context mContext;
@@ -68,6 +57,13 @@ public class AM6 extends FunctionFoldActivity {
         Intent intent = getIntent();
         mDeviceMac = intent.getStringExtra("mac");
         mDeviceName = intent.getStringExtra("type");
+
+        // 初始化视图
+        rvAPIs = findViewById(R.id.rv_am6_api);
+        etType = findViewById(R.id.et_type);
+        etStatus = findViewById(R.id.et_status);
+        etTitle = findViewById(R.id.et_title);
+        etContent = findViewById(R.id.et_content);
 
         mClientCallbackId = iHealthDevicesManager.getInstance().registerClientCallback(miHealthDevicesCallback);
         /* Limited wants to receive notification specified device */

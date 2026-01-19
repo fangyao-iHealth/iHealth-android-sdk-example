@@ -6,6 +6,6 @@
     android:background="#FFFFFF"
     tools:context=".business.LogFragment">
 
-    <include layout="@layout/layout_log" />
+    <include layout="@layout/layout_log" android:id="@+id/layoutLog" />
 
 </LinearLayout>

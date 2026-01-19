@@ -23,8 +23,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import butterknife.OnClick;
-
 
 public class BP7S extends FunctionFoldActivity {
     private Context mContext;
@@ -50,6 +48,17 @@ public class BP7S extends FunctionFoldActivity {
         /* Get bp7s controller */
         mBp7sControl = iHealthDevicesManager.getInstance().getBp7sControl(mDeviceMac);
 //        setDeviceInfo(mDeviceName, mDeviceMac);
+
+        // 设置点击监听器
+        findViewById(R.id.btnDisconnect).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnIDPS).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnBattery).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnFunction).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnAngle).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnSetUnit).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnSetUnit2).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnDataNum).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnGetData).setOnClickListener(this::onViewClicked);
     }
 
     private iHealthDevicesCallback miHealthDevicesCallback = new iHealthDevicesCallback() {
@@ -195,52 +204,40 @@ public class BP7S extends FunctionFoldActivity {
 
     }
 
-    @OnClick({R.id.btnDisconnect, R.id.btnIDPS, R.id.btnBattery, R.id.btnFunction,
-            R.id.btnAngle, R.id.btnSetUnit, R.id.btnSetUnit2,
-            R.id.btnDataNum, R.id.btnGetData})
     public void onViewClicked(View view) {
         if (mBp7sControl == null) {
             addLogInfo("mBp7sControl == null");
             return;
         }
         showLogLayout();
-        switch (view.getId()) {
-            case R.id.btnDisconnect:
-                mBp7sControl.disconnect();
-                addLogInfo("disconnect()");
-                break;
-            case R.id.btnIDPS:
-                mBp7sControl.getIdps();
-                addLogInfo("getIdps() -->" + mBp7sControl.getIdps());
-                break;
-            case R.id.btnBattery:
-                mBp7sControl.getBattery();
-                addLogInfo("getBattery()");
-                break;
-            case R.id.btnFunction:
-                mBp7sControl.getFunctionInfo();
-                addLogInfo("getFunctionInfo()");
-                break;
-            case R.id.btnAngle:
-                mBp7sControl.angleSet((byte) 90, (byte) 60, (byte) 90, (byte) 60);
-                addLogInfo("angleSet()");
-                break;
-            case R.id.btnSetUnit:
-                mBp7sControl.setUnit(0);
-                addLogInfo("setUnit()--> mmHg");
-                break;
-            case R.id.btnSetUnit2:
-                mBp7sControl.setUnit(1);
-                addLogInfo("setUnit()--> kPa");
-                break;
-            case R.id.btnDataNum:
-                mBp7sControl.getOfflineNum();
-                addLogInfo("getOfflineNum()");
-                break;
-            case R.id.btnGetData:
-                mBp7sControl.getOfflineData();
-                addLogInfo("getOfflineData()");
-                break;
+        int id = view.getId();
+        if (id == R.id.btnDisconnect) {
+            mBp7sControl.disconnect();
+            addLogInfo("disconnect()");
+        } else if (id == R.id.btnIDPS) {
+            mBp7sControl.getIdps();
+            addLogInfo("getIdps() -->" + mBp7sControl.getIdps());
+        } else if (id == R.id.btnBattery) {
+            mBp7sControl.getBattery();
+            addLogInfo("getBattery()");
+        } else if (id == R.id.btnFunction) {
+            mBp7sControl.getFunctionInfo();
+            addLogInfo("getFunctionInfo()");
+        } else if (id == R.id.btnAngle) {
+            mBp7sControl.angleSet((byte) 90, (byte) 60, (byte) 90, (byte) 60);
+            addLogInfo("angleSet()");
+        } else if (id == R.id.btnSetUnit) {
+            mBp7sControl.setUnit(0);
+            addLogInfo("setUnit()--> mmHg");
+        } else if (id == R.id.btnSetUnit2) {
+            mBp7sControl.setUnit(1);
+            addLogInfo("setUnit()--> kPa");
+        } else if (id == R.id.btnDataNum) {
+            mBp7sControl.getOfflineNum();
+            addLogInfo("getOfflineNum()");
+        } else if (id == R.id.btnGetData) {
+            mBp7sControl.getOfflineData();
+            addLogInfo("getOfflineData()");
         }
     }
 

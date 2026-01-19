@@ -23,13 +23,9 @@ import com.ihealth.demo.business.FunctionFoldActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import butterknife.BindView;
-import butterknife.OnClick;
-
 
 public class AM3 extends FunctionFoldActivity {
 
-    @BindView(R.id.etResetId)
     EditText mEtResetId;
 
     private Context mContext;
@@ -54,6 +50,14 @@ public class AM3 extends FunctionFoldActivity {
         iHealthDevicesManager.getInstance().addCallbackFilterForDeviceType(mClientCallbackId, iHealthDevicesManager.TYPE_AM3);
         /* Get am3s controller */
         mAm3Control = iHealthDevicesManager.getInstance().getAm3Control(mDeviceMac);
+        
+        // 初始化视图
+        mEtResetId = findViewById(R.id.etResetId);
+        
+        // 设置点击监听器
+        findViewById(R.id.btnDisconnect).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnReset).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnGetUserId).setOnClickListener(this::onViewClicked);
     }
 
     private iHealthDevicesCallback miHealthDevicesCallback = new iHealthDevicesCallback() {
@@ -149,36 +153,28 @@ public class AM3 extends FunctionFoldActivity {
         return super.onKeyUp(keyCode, event);
     }
 
-    @OnClick({ R.id.btnDisconnect,
-            R.id.btnReset,
-            R.id.btnGetUserId })
     public void onViewClicked(View view) {
         if (mAm3Control == null) {
             addLogInfo("mAm3Control == null");
             return;
         }
         showLogLayout();
-        switch (view.getId()) {
-            case R.id.btnDisconnect:
-                mAm3Control.disconnect();
-                addLogInfo("disconnect()");
-                break;
-
-            case R.id.btnReset:
-                String userId = mEtResetId.getText().toString().trim();
-                if (TextUtils.isEmpty(userId)) {
-                    long resetId = Long.parseLong(userId);
-                    mAm3Control.reset(resetId);
-                    addLogInfo("reset() --> reset id:" + resetId);
-                } else {
-                    Toast.makeText(this, "Please get user id, before reset the AM3 device", Toast.LENGTH_LONG).show();
-                }
-                break;
-
-            case R.id.btnGetUserId:
-                mAm3Control.getUserId();
-                addLogInfo("getUserId()");
-                break;
+        int id = view.getId();
+        if (id == R.id.btnDisconnect) {
+            mAm3Control.disconnect();
+            addLogInfo("disconnect()");
+        } else if (id == R.id.btnReset) {
+            String userId = mEtResetId.getText().toString().trim();
+            if (TextUtils.isEmpty(userId)) {
+                long resetId = Long.parseLong(userId);
+                mAm3Control.reset(resetId);
+                addLogInfo("reset() --> reset id:" + resetId);
+            } else {
+                Toast.makeText(this, "Please get user id, before reset the AM3 device", Toast.LENGTH_LONG).show();
+            }
+        } else if (id == R.id.btnGetUserId) {
+            mAm3Control.getUserId();
+            addLogInfo("getUserId()");
         }
     }
 

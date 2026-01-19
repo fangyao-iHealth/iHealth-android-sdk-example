@@ -23,9 +23,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 
 public class BP550BT extends FunctionFoldActivity {
     private Context mContext;
@@ -51,6 +48,19 @@ public class BP550BT extends FunctionFoldActivity {
         /* Get bp550bt controller */
         mBp550btControl = iHealthDevicesManager.getInstance().getBp550BTControl(mDeviceMac);
 //        setDeviceInfo(mDeviceName, mDeviceMac);
+
+        // 设置点击监听器
+        findViewById(R.id.btnDisconnect).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnIDPS).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnBattery).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnFunction).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnGetStatus).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnSetBackLight).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnSetLocking).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnDataNum).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnGetData).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnGetTime).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnTransferFinished).setOnClickListener(this::onViewClicked);
     }
 
     private iHealthDevicesCallback miHealthDevicesCallback = new iHealthDevicesCallback() {
@@ -226,68 +236,46 @@ public class BP550BT extends FunctionFoldActivity {
         return super.onKeyUp(keyCode, event);
     }
 
-    @OnClick({R.id.btnDisconnect,
-            R.id.btnIDPS,
-            R.id.btnBattery,
-            R.id.btnFunction,
-            R.id.btnGetStatus,
-            R.id.btnSetBackLight,
-            R.id.btnSetLocking,
-            R.id.btnDataNum,
-            R.id.btnGetData,
-            R.id.btnGetTime,
-            R.id.btnTransferFinished})
     public void onViewClicked(View view) {
         if (mBp550btControl == null) {
             addLogInfo("mBp550btControl == null");
             return;
         }
         showLogLayout();
-        switch (view.getId()) {
-            case R.id.btnDisconnect:
-                mBp550btControl.disconnect();
-                addLogInfo("disconnect()");
-                break;
-            case R.id.btnIDPS:
-                mBp550btControl.getIdps();
-                addLogInfo("getIdps() -->" + mBp550btControl.getIdps());
-                break;
-            case R.id.btnBattery:
-                mBp550btControl.getBattery();
-                addLogInfo("getBattery()");
-                break;
-            case R.id.btnFunction:
-                mBp550btControl.getFunctionInfo();
-                addLogInfo("getFunctionInfo()");
-                break;
-            case R.id.btnGetStatus:
-                mBp550btControl.getStatusOfDisplay();
-                addLogInfo("getStatusOfDisplay()");
-                break;
-            case R.id.btnSetBackLight:
-                mBp550btControl.setStatusOfDisplay(true, false);
-                addLogInfo("setStatusOfDisplay()");
-                break;
-            case R.id.btnSetLocking:
-                mBp550btControl.setStatusOfDisplay(false, true);
-                addLogInfo("setStatusOfDisplay()");
-                break;
-            case R.id.btnDataNum:
-                mBp550btControl.getOfflineNum();
-                addLogInfo("getOfflineNum()");
-                break;
-            case R.id.btnGetData:
-                mBp550btControl.getOfflineData();
-                addLogInfo("getOfflineData()");
-                break;
-            case R.id.btnGetTime:
-                mBp550btControl.getTime();
-                addLogInfo("getTime()");
-                break;
-            case R.id.btnTransferFinished:
-                mBp550btControl.transferFinished();
-                addLogInfo("transferFinished()");
-                break;
+        int id = view.getId();
+        if (id == R.id.btnDisconnect) {
+            mBp550btControl.disconnect();
+            addLogInfo("disconnect()");
+        } else if (id == R.id.btnIDPS) {
+            mBp550btControl.getIdps();
+            addLogInfo("getIdps() -->" + mBp550btControl.getIdps());
+        } else if (id == R.id.btnBattery) {
+            mBp550btControl.getBattery();
+            addLogInfo("getBattery()");
+        } else if (id == R.id.btnFunction) {
+            mBp550btControl.getFunctionInfo();
+            addLogInfo("getFunctionInfo()");
+        } else if (id == R.id.btnGetStatus) {
+            mBp550btControl.getStatusOfDisplay();
+            addLogInfo("getStatusOfDisplay()");
+        } else if (id == R.id.btnSetBackLight) {
+            mBp550btControl.setStatusOfDisplay(true, false);
+            addLogInfo("setStatusOfDisplay()");
+        } else if (id == R.id.btnSetLocking) {
+            mBp550btControl.setStatusOfDisplay(false, true);
+            addLogInfo("setStatusOfDisplay()");
+        } else if (id == R.id.btnDataNum) {
+            mBp550btControl.getOfflineNum();
+            addLogInfo("getOfflineNum()");
+        } else if (id == R.id.btnGetData) {
+            mBp550btControl.getOfflineData();
+            addLogInfo("getOfflineData()");
+        } else if (id == R.id.btnGetTime) {
+            mBp550btControl.getTime();
+            addLogInfo("getTime()");
+        } else if (id == R.id.btnTransferFinished) {
+            mBp550btControl.transferFinished();
+            addLogInfo("transferFinished()");
         }
     }
 }

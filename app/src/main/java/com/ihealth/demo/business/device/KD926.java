@@ -22,8 +22,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import butterknife.OnClick;
-
 
 public class KD926 extends FunctionFoldActivity {
     private Context mContext;
@@ -49,6 +47,11 @@ public class KD926 extends FunctionFoldActivity {
         /* Get bp550bt controller */
         mBp926Control = iHealthDevicesManager.getInstance().getBp926Control(mDeviceMac);
 //        setDeviceInfo(mDeviceName, mDeviceMac);
+
+        // 设置点击监听器
+        findViewById(R.id.btnDisconnect).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnBattery).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnGetData).setOnClickListener(this::onViewClicked);
     }
 
     private iHealthDevicesCallback miHealthDevicesCallback = new iHealthDevicesCallback() {
@@ -175,29 +178,23 @@ public class KD926 extends FunctionFoldActivity {
         return super.onKeyUp(keyCode, event);
     }
 
-    @OnClick({R.id.btnDisconnect, R.id.btnBattery,  R.id.btnGetData})
     public void onViewClicked(View view) {
         if (mBp926Control == null) {
             addLogInfo("mBp926Control == null");
             return;
         }
         showLogLayout();
-        switch (view.getId()) {
-            case R.id.btnDisconnect:
-                mBp926Control.disconnect();
-                addLogInfo("disconnect()");
-                break;
-
-            case R.id.btnBattery:
-                mBp926Control.getBattery();
-                addLogInfo("getBattery()");
-                break;
-
-            case R.id.btnGetData:
-                mBp926Control.commandSetUser(1);
-                mBp926Control.getData();
-                addLogInfo("getData()");
-                break;
+        int id = view.getId();
+        if (id == R.id.btnDisconnect) {
+            mBp926Control.disconnect();
+            addLogInfo("disconnect()");
+        } else if (id == R.id.btnBattery) {
+            mBp926Control.getBattery();
+            addLogInfo("getBattery()");
+        } else if (id == R.id.btnGetData) {
+            mBp926Control.commandSetUser(1);
+            mBp926Control.getData();
+            addLogInfo("getData()");
         }
     }
 }

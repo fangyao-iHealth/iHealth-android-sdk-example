@@ -25,8 +25,6 @@ import com.ec.easylibrary.dialog.confirm.ConfirmDialog;
 import com.ec.easylibrary.utils.DateUtils;
 import com.ihealth.demo.R;
 
-import butterknife.ButterKnife;
-
 /**
  * <li>BaseActivity</li>
  * <li>All Activity Basic</li>
@@ -92,7 +90,6 @@ public abstract class BaseActivity extends AppCompatActivity {
             mRlMain.addView(layout);
         }
 
-        ButterKnife.bind(this);
         AppManager.instance().addActivity(this);
 
         WindowManager manager = this.getWindowManager();

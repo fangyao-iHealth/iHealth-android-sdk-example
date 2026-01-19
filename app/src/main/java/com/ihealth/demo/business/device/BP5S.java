@@ -22,14 +22,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import butterknife.BindView;
-import butterknife.OnClick;
-
 
 public class BP5S extends FunctionFoldActivity {
-    @BindView(R.id.btnOfflineMeasureEnable)
     Button mBtnOfflineMeasureEnable;
-    @BindView(R.id.btnOfflineMeasureDisable)
     Button mBtnOfflineMeasureDisable;
 
     private Context mContext;
@@ -56,6 +51,22 @@ public class BP5S extends FunctionFoldActivity {
         /* Get bp5 controller */
         mBp5sControl = iHealthDevicesManager.getInstance().getBp5sControl(mDeviceMac);
 //        setDeviceInfo(mDeviceName, mDeviceMac);
+
+        // 初始化视图
+        mBtnOfflineMeasureEnable = findViewById(R.id.btnOfflineMeasureEnable);
+        mBtnOfflineMeasureDisable = findViewById(R.id.btnOfflineMeasureDisable);
+        
+        // 设置点击监听器
+        findViewById(R.id.btnDisconnect).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnMeasurement).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnStopMeasurement).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnBattery).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnFunction).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnOfflineMeasureEnable).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnOfflineMeasureDisable).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnDataNum).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnGetData).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnSetUnit).setOnClickListener(this::onViewClicked);
     }
 
     private iHealthDevicesCallback miHealthDevicesCallback = new iHealthDevicesCallback() {
@@ -262,72 +273,43 @@ public class BP5S extends FunctionFoldActivity {
 
     }
 
-    @OnClick({R.id.btnDisconnect,
-            R.id.btnMeasurement,
-            R.id.btnStopMeasurement,
-            R.id.btnBattery,
-            R.id.btnFunction,
-            R.id.btnOfflineMeasureEnable,
-            R.id.btnOfflineMeasureDisable,
-            R.id.btnDataNum,
-            R.id.btnGetData,
-            R.id.btnSetUnit})
     public void onViewClicked(View view) {
         if (mBp5sControl == null) {
             addLogInfo("mBp5Control == null");
             return;
         }
         showLogLayout();
-        switch (view.getId()) {
-            case R.id.btnDisconnect:
-                mBp5sControl.disconnect();
-                addLogInfo("disconnect()");
-                break;
-
-            case R.id.btnMeasurement:
-                mBp5sControl.startMeasure(0, 5, 0, 10);
-                addLogInfo("startMeasure()");
-                break;
-
-            case R.id.btnStopMeasurement:
-                mBp5sControl.interruptMeasure();
-                addLogInfo("interruptMeasure()");
-                break;
-
-            case R.id.btnBattery:
-                mBp5sControl.getBattery();
-                addLogInfo("getBattery()");
-                break;
-
-            case R.id.btnFunction:
-                mBp5sControl.getFunctionInfo();
-                addLogInfo("isEnableOffline()");
-                break;
-
-            case R.id.btnOfflineMeasureEnable:
-                mBp5sControl.setMode(BpProfile.STATUS_MODE_TO_C);
-                addLogInfo("enbleOffline()");
-                break;
-
-            case R.id.btnOfflineMeasureDisable:
-                mBp5sControl.setMode(BpProfile.STATUS_MODE_TO_B);
-                addLogInfo("disableOffline()");
-                break;
-
-            case R.id.btnDataNum:
-                mBp5sControl.getOfflineDataNum();
-                addLogInfo("getOfflineNum()");
-                break;
-
-            case R.id.btnGetData:
-                mBp5sControl.getOfflineData();
-                addLogInfo("getOfflineData()");
-                break;
-
-            case R.id.btnSetUnit:
-                mBp5sControl.setUnitDisplay(1);
-                addLogInfo("setUnitDisplay()");
-                break;
+        int id = view.getId();
+        if (id == R.id.btnDisconnect) {
+            mBp5sControl.disconnect();
+            addLogInfo("disconnect()");
+        } else if (id == R.id.btnMeasurement) {
+            mBp5sControl.startMeasure(0, 5, 0, 10);
+            addLogInfo("startMeasure()");
+        } else if (id == R.id.btnStopMeasurement) {
+            mBp5sControl.interruptMeasure();
+            addLogInfo("interruptMeasure()");
+        } else if (id == R.id.btnBattery) {
+            mBp5sControl.getBattery();
+            addLogInfo("getBattery()");
+        } else if (id == R.id.btnFunction) {
+            mBp5sControl.getFunctionInfo();
+            addLogInfo("isEnableOffline()");
+        } else if (id == R.id.btnOfflineMeasureEnable) {
+            mBp5sControl.setMode(BpProfile.STATUS_MODE_TO_C);
+            addLogInfo("enbleOffline()");
+        } else if (id == R.id.btnOfflineMeasureDisable) {
+            mBp5sControl.setMode(BpProfile.STATUS_MODE_TO_B);
+            addLogInfo("disableOffline()");
+        } else if (id == R.id.btnDataNum) {
+            mBp5sControl.getOfflineDataNum();
+            addLogInfo("getOfflineNum()");
+        } else if (id == R.id.btnGetData) {
+            mBp5sControl.getOfflineData();
+            addLogInfo("getOfflineData()");
+        } else if (id == R.id.btnSetUnit) {
+            mBp5sControl.setUnitDisplay(1);
+            addLogInfo("setUnitDisplay()");
         }
     }
 

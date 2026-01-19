@@ -24,9 +24,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import butterknife.BindView;
-import butterknife.OnClick;
-
 
 public class HS3 extends FunctionFoldActivity {
 
@@ -63,6 +60,9 @@ public class HS3 extends FunctionFoldActivity {
         /* Get hs3 controller */
         mHs3Control = iHealthDevicesManager.getInstance().getHs3Control(mDeviceMac);
 
+        // 设置点击监听器
+        findViewById(R.id.btn_disconnect).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btn_getData).setOnClickListener(this::onViewClicked);
     }
 
     private iHealthDevicesCallback miHealthDevicesCallback = new iHealthDevicesCallback() {
@@ -225,23 +225,19 @@ public class HS3 extends FunctionFoldActivity {
     }
 
 
-    @OnClick({R.id.btn_disconnect,
-            R.id.btn_getData })
     public void onViewClicked(View view) {
         if (mHs3Control == null) {
             addLogInfo("mHs4Control == null");
             return;
         }
         showLogLayout();
-        switch (view.getId()) {
-            case R.id.btn_disconnect:
-                mHs3Control.disconnect();
-                addLogInfo("disconnect()");
-                break;
-            case R.id.btn_getData:
-                mHs3Control.getOfflineData();
-                addLogInfo("getOfflineData()");
-                break;
+        int id = view.getId();
+        if (id == R.id.btn_disconnect) {
+            mHs3Control.disconnect();
+            addLogInfo("disconnect()");
+        } else if (id == R.id.btn_getData) {
+            mHs3Control.getOfflineData();
+            addLogInfo("getOfflineData()");
         }
     }
 }

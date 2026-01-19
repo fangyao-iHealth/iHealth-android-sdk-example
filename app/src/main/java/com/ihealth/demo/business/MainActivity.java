@@ -23,7 +23,6 @@ import com.ihealth.demo.base.BaseFragmentActivity;
 import com.ihealth.demo.business.device.AM3;
 import com.ihealth.demo.business.device.AM3S;
 import com.ihealth.demo.business.device.AM4;
-import com.ihealth.demo.business.device.AM5;
 import com.ihealth.demo.business.device.AM6;
 import com.ihealth.demo.business.device.BG1;
 import com.ihealth.demo.business.device.BG1A;
@@ -37,8 +36,6 @@ import com.ihealth.demo.business.device.BP550BT;
 import com.ihealth.demo.business.device.BP5S;
 import com.ihealth.demo.business.device.BP7S;
 import com.ihealth.demo.business.device.BTM;
-import com.ihealth.demo.business.device.ECG3;
-import com.ihealth.demo.business.device.ECGUSB;
 import com.ihealth.demo.business.device.HS2;
 import com.ihealth.demo.business.device.HS2S;
 import com.ihealth.demo.business.device.HS2SPRO;
@@ -57,8 +54,6 @@ import com.ihealth.demo.business.device.model.DeviceCharacteristic;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
-import butterknife.BindView;
-
 
 /**
  * MainActivity
@@ -66,13 +61,9 @@ import butterknife.BindView;
  */
 public class MainActivity extends BaseFragmentActivity {
 
-    @BindView(R.id.flContent)
     FrameLayout mFlContent;
-    @BindView(R.id.tvTitle)
     TextView mTvTitle;
-    @BindView(R.id.tvDeviceInfo)
     TextView mTvDeviceInfo;
-    @BindView(R.id.imgStatus)
     ImageView mImgStatus;
 
     private Context mContext;
@@ -117,6 +108,12 @@ public class MainActivity extends BaseFragmentActivity {
      */
     private void init() {
         mContext = this;
+        // 初始化视图
+        mFlContent = findViewById(R.id.flContent);
+        mTvTitle = findViewById(R.id.tvTitle);
+        mTvDeviceInfo = findViewById(R.id.tvDeviceInfo);
+        mImgStatus = findViewById(R.id.imgStatus);
+        
         clearFragments();
         checkPermission();
         initDeviceInfo();
@@ -342,10 +339,6 @@ public class MainActivity extends BaseFragmentActivity {
                 intent.setClass(MainActivity.this, AM4.class);
                 break;
 
-            case iHealthDevicesManager.TYPE_AM5:
-                intent.setClass(MainActivity.this, AM5.class);
-                break;
-
             case iHealthDevicesManager.TYPE_AM6:
                 intent.setClass(MainActivity.this, AM6.class);
                 break;
@@ -366,13 +359,6 @@ public class MainActivity extends BaseFragmentActivity {
                 intent.setClass(MainActivity.this, PO3.class);
                 break;
 
-            case iHealthDevicesManager.TYPE_ECG3:
-                intent.setClass(MainActivity.this, ECG3.class);
-                break;
-
-            case iHealthDevicesManager.TYPE_ECG3_USB:
-                intent.setClass(MainActivity.this, ECGUSB.class);
-                break;
 
             case iHealthDevicesManager.TYPE_PT3SBT:
                 intent.setClass(MainActivity.this, PT3SBT.class);

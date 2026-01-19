@@ -10,8 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import butterknife.ButterKnife;
-
 /**
  * <li>BaseFragment</li>
  * <li>All Fragment Basic</li>
@@ -40,8 +38,6 @@ public abstract class BaseFragment extends Fragment {
 
     // 初始化UI
     private void init() {
-        // ButterKnife bind
-        ButterKnife.bind(this, mRootView);
         initView();
     }
 

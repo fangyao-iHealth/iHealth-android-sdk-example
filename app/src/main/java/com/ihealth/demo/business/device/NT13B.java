@@ -20,8 +20,6 @@ import com.ihealth.demo.business.FunctionFoldActivity;
 
 import java.text.SimpleDateFormat;
 
-import butterknife.OnClick;
-
 
 public class NT13B extends FunctionFoldActivity {
     private Context mContext;
@@ -48,6 +46,9 @@ public class NT13B extends FunctionFoldActivity {
         /* Get ts28b controller */
         mNT13BControl = iHealthDevicesManager.getInstance().getNT13BControl(mDeviceMac);
 
+        // 设置点击监听器
+        findViewById(R.id.btnDisconnect).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnGetData).setOnClickListener(this::onViewClicked);
     }
 
     private iHealthDevicesCallback miHealthDevicesCallback = new iHealthDevicesCallback() {
@@ -146,22 +147,19 @@ public class NT13B extends FunctionFoldActivity {
     }
 
 
-    @OnClick({R.id.btnDisconnect, R.id.btnGetData})
     public void onViewClicked(View view) {
         if (mNT13BControl == null) {
             addLogInfo("mNT13BControl == null");
             return;
         }
         showLogLayout();
-        switch (view.getId()) {
-            case R.id.btnDisconnect:
-                mNT13BControl.disconnect();
-                addLogInfo("disconnect()");
-                break;
-            case R.id.btnGetData:
-                mNT13BControl.getMeasurement();
-                addLogInfo("getMeasurement()");
-                break;
+        int id = view.getId();
+        if (id == R.id.btnDisconnect) {
+            mNT13BControl.disconnect();
+            addLogInfo("disconnect()");
+        } else if (id == R.id.btnGetData) {
+            mNT13BControl.getMeasurement();
+            addLogInfo("getMeasurement()");
         }
     }
 

@@ -23,7 +23,7 @@ import android.widget.ImageView;
 
 import com.ec.easylibrary.R;
 
-public class SpinView extends ImageView implements Indeterminate {
+public class SpinView extends androidx.appcompat.widget.AppCompatImageView implements Indeterminate {
 
     private float mRotateDegrees;
     private int mFrameTime;

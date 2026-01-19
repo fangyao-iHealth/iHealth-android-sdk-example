@@ -33,9 +33,6 @@ import org.json.JSONTokener;
 import java.io.IOException;
 import java.io.InputStream;
 
-import butterknife.BindView;
-import butterknife.OnClick;
-
 
 public class BPM1 extends FunctionFoldActivity {
 
@@ -79,13 +76,8 @@ public class BPM1 extends FunctionFoldActivity {
     public static final int BPM1_SCANED_WIFI_SPECIFIED = 16;
     public static final int BPM1_IS_CONNECTING = 17;
 
-    @BindView(R.id.mEtSSID)
     EditText mEtSSID;
-
-    @BindView(R.id.etPassword)
     EditText etPassword;
-
-    @BindView(R.id.btnSetWifi)
     Button mBtnSetWifi;
 
     private Context mContext;
@@ -106,6 +98,14 @@ public class BPM1 extends FunctionFoldActivity {
         mDeviceMac = intent.getStringExtra("mac");
         mDeviceName = intent.getStringExtra("type");
 
+        // 初始化视图
+        mEtSSID = findViewById(R.id.mEtSSID);
+        etPassword = findViewById(R.id.etPassword);
+        mBtnSetWifi = findViewById(R.id.btnSetWifi);
+        
+        // 设置点击监听器
+        mBtnSetWifi.setOnClickListener(this::onViewClicked);
+        
         WifiManager manager = (WifiManager)getSystemService(Context.WIFI_SERVICE);
         WifiInfo info = manager.getConnectionInfo();
         String ssid = info.getSSID();
@@ -156,14 +156,12 @@ public class BPM1 extends FunctionFoldActivity {
         }
     };
 
-    @OnClick({ R.id.btnSetWifi, })
     public void onViewClicked(View view) {
         showLogLayout();
-        switch (view.getId()) {
-            case R.id.btnSetWifi:
-                mLoadingDialog.show();
-                mBpm1Control = new Bpm1Control(this, iHealthDevicesManager.TYPE_BPM1, mIHealthDeviceBpm1Callback);
-                mBpm1Control.connectDevice("iHealth-BPM1", 20000);
+        if (view.getId() == R.id.btnSetWifi) {
+            mLoadingDialog.show();
+            mBpm1Control = new Bpm1Control(this, iHealthDevicesManager.TYPE_BPM1, mIHealthDeviceBpm1Callback);
+            mBpm1Control.connectDevice("iHealth-BPM1", 20000);
 //                String ssid = mEtSSID.getText().toString().trim();
 //                String password = etPassword.getText().toString().trim();
 //                RouterBean routerBean = new RouterBean();
@@ -193,7 +191,6 @@ public class BPM1 extends FunctionFoldActivity {
 //                    mBpm1Control.sendRouter();
 //                }
 //                addLogInfo("HS6 setWifi --> ssid:" + ssid + " password:" + password + " deviceKey:" + deviceKey);
-                break;
         }
     }
     @Override

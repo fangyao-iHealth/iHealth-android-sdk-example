@@ -24,10 +24,6 @@ import com.ihealth.demo.business.FunctionFoldActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 import static com.ihealth.communication.control.BtmControl.FUNCTION_TARGET_OFFLINE;
 import static com.ihealth.communication.control.BtmControl.FUNCTION_TARGET_ONLINE;
 import static com.ihealth.communication.control.BtmControl.MEASURING_TARGET_BODY;
@@ -37,11 +33,8 @@ import static com.ihealth.communication.control.BtmControl.TEMPERATURE_UNIT_F;
 
 
 public class BTM extends FunctionFoldActivity {
-    @BindView(R.id.etStandbyHour)
     EditText mEtStandbyHour;
-    @BindView(R.id.etStandbyMinute)
     EditText mEtStandbyMinute;
-    @BindView(R.id.etStandbySecond)
     EditText mEtStandbySecond;
     private Context mContext;
     private static final String TAG = "BTM";
@@ -65,6 +58,23 @@ public class BTM extends FunctionFoldActivity {
         iHealthDevicesManager.getInstance().addCallbackFilterForDeviceType(mClientCallbackId, iHealthDevicesManager.TYPE_FDIR_V3);
         /* Get btm controller */
         mBTMControl = iHealthDevicesManager.getInstance().getBtmControl(mDeviceMac);
+
+        // 初始化视图
+        mEtStandbyHour = findViewById(R.id.etStandbyHour);
+        mEtStandbyMinute = findViewById(R.id.etStandbyMinute);
+        mEtStandbySecond = findViewById(R.id.etStandbySecond);
+        
+        // 设置点击监听器
+        findViewById(R.id.btnDisconnect).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnGetBattery).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnSetStandbyTime).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnSetUnit).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnSetUnit2).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnSetTarget).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnSetTarget2).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnOnLine).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnOffLine).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnGetData).setOnClickListener(this::onViewClicked);
 
     }
 
@@ -180,59 +190,46 @@ public class BTM extends FunctionFoldActivity {
     }
 
 
-    @OnClick({R.id.btnDisconnect, R.id.btnGetBattery, R.id.btnSetStandbyTime, R.id.btnSetUnit,
-            R.id.btnSetUnit2, R.id.btnSetTarget, R.id.btnSetTarget2,
-            R.id.btnOnLine, R.id.btnOffLine, R.id.btnGetData})
     public void onViewClicked(View view) {
         if (mBTMControl == null) {
             addLogInfo("mBTMControl == null");
             return;
         }
         showLogLayout();
-        switch (view.getId()) {
-            case R.id.btnDisconnect:
-                mBTMControl.disconnect();
-                addLogInfo("disconnect()");
-                break;
-            case R.id.btnGetBattery:
-                mBTMControl.getBattery();
-                addLogInfo("getBattery()");
-                break;
-            case R.id.btnSetStandbyTime:
-                String standbyHour = mEtStandbyHour.getText().toString();
-                String standbyMinute = mEtStandbyMinute.getText().toString();
-                String standbySecond = mEtStandbySecond.getText().toString();
-                mBTMControl.setStandbyTime(Integer.parseInt(standbyHour), Integer.parseInt(standbyMinute), Integer.parseInt(standbySecond));
-                addLogInfo("setStandbyTime() -->standbyHour:" + standbyHour + " standbyMinute:" + standbyMinute + " standbySecond:" + standbySecond);
-                break;
-            case R.id.btnSetUnit:
-                mBTMControl.setTemperatureUnit(TEMPERATURE_UNIT_C);
-                addLogInfo("btnSetUnit()--> TEMPERATURE_UNIT_C");
-                break;
-            case R.id.btnSetUnit2:
-                mBTMControl.setTemperatureUnit(TEMPERATURE_UNIT_F);
-                addLogInfo("btnSetUnit()--> TEMPERATURE_UNIT_F");
-                break;
-            case R.id.btnOnLine:
-                mBTMControl.setOfflineTarget(FUNCTION_TARGET_ONLINE);
-                addLogInfo("setOfflineTarget()--> FUNCTION_TARGET_ONLINE");
-                break;
-            case R.id.btnOffLine:
-                mBTMControl.setOfflineTarget(FUNCTION_TARGET_OFFLINE);
-                addLogInfo("setOfflineTarget()--> FUNCTION_TARGET_OFFLINE");
-                break;
-            case R.id.btnSetTarget:
-                mBTMControl.setMeasuringTarget(MEASURING_TARGET_BODY);
-                addLogInfo("setMeasuringTarget()--> MEASURING_TARGET_BODY");
-                break;
-            case R.id.btnSetTarget2:
-                mBTMControl.setMeasuringTarget(MEASURING_TARGET_OBJECT);
-                addLogInfo("setMeasuringTarget()--> MEASURING_TARGET_OBJECT");
-                break;
-            case R.id.btnGetData:
-                mBTMControl.getMemoryData();
-                addLogInfo("getMemoryData()");
-                break;
+        int id = view.getId();
+        if (id == R.id.btnDisconnect) {
+            mBTMControl.disconnect();
+            addLogInfo("disconnect()");
+        } else if (id == R.id.btnGetBattery) {
+            mBTMControl.getBattery();
+            addLogInfo("getBattery()");
+        } else if (id == R.id.btnSetStandbyTime) {
+            String standbyHour = mEtStandbyHour.getText().toString();
+            String standbyMinute = mEtStandbyMinute.getText().toString();
+            String standbySecond = mEtStandbySecond.getText().toString();
+            mBTMControl.setStandbyTime(Integer.parseInt(standbyHour), Integer.parseInt(standbyMinute), Integer.parseInt(standbySecond));
+            addLogInfo("setStandbyTime() -->standbyHour:" + standbyHour + " standbyMinute:" + standbyMinute + " standbySecond:" + standbySecond);
+        } else if (id == R.id.btnSetUnit) {
+            mBTMControl.setTemperatureUnit(TEMPERATURE_UNIT_C);
+            addLogInfo("btnSetUnit()--> TEMPERATURE_UNIT_C");
+        } else if (id == R.id.btnSetUnit2) {
+            mBTMControl.setTemperatureUnit(TEMPERATURE_UNIT_F);
+            addLogInfo("btnSetUnit()--> TEMPERATURE_UNIT_F");
+        } else if (id == R.id.btnOnLine) {
+            mBTMControl.setOfflineTarget(FUNCTION_TARGET_ONLINE);
+            addLogInfo("setOfflineTarget()--> FUNCTION_TARGET_ONLINE");
+        } else if (id == R.id.btnOffLine) {
+            mBTMControl.setOfflineTarget(FUNCTION_TARGET_OFFLINE);
+            addLogInfo("setOfflineTarget()--> FUNCTION_TARGET_OFFLINE");
+        } else if (id == R.id.btnSetTarget) {
+            mBTMControl.setMeasuringTarget(MEASURING_TARGET_BODY);
+            addLogInfo("setMeasuringTarget()--> MEASURING_TARGET_BODY");
+        } else if (id == R.id.btnSetTarget2) {
+            mBTMControl.setMeasuringTarget(MEASURING_TARGET_OBJECT);
+            addLogInfo("setMeasuringTarget()--> MEASURING_TARGET_OBJECT");
+        } else if (id == R.id.btnGetData) {
+            mBTMControl.getMemoryData();
+            addLogInfo("getMemoryData()");
         }
     }
 

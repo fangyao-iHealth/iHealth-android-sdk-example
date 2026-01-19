@@ -67,8 +67,10 @@ public class ImageUtils {
         Cursor cursor = context.getContentResolver().query(uri, null, selection, null, null);
         if (cursor != null) {
             if (cursor.moveToFirst()) {
-                if (cursor.getColumnIndex(MediaStore.Images.Media.DATA) != -1) {
-                    path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+                // 添加列索引检查
+                int columnIndex = cursor.getColumnIndex(MediaStore.Images.Media.DATA);
+                if (columnIndex != -1) {
+                    path = cursor.getString(columnIndex);
                 }
 
             }

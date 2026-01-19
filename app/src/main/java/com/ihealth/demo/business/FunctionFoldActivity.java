@@ -25,8 +25,6 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.ihealth.demo.R;
 import com.ihealth.demo.base.BaseActivity;
 
-import butterknife.ButterKnife;
-
 /**
  * 能够折叠的
  * <li>FunctionFoldActivity</li>

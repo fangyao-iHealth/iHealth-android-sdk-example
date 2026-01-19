@@ -18,9 +18,6 @@ import com.ihealth.communication.manager.iHealthDevicesManager;
 import com.ihealth.demo.R;
 import com.ihealth.demo.business.FunctionFoldActivity;
 
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 
 public class BG1S extends FunctionFoldActivity {
 
@@ -47,6 +44,10 @@ public class BG1S extends FunctionFoldActivity {
         /* Get bg1s controller */
         mBg1sControl = iHealthDevicesManager.getInstance().getBg1sControl(mDeviceMac);
 
+        // 设置点击监听器
+        findViewById(R.id.btnDisconnect).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnGetDeviceInfo).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnSetMeasureMode).setOnClickListener(this::onViewClicked);
     }
 
     private iHealthDevicesCallback miHealthDevicesCallback = new iHealthDevicesCallback() {
@@ -135,33 +136,22 @@ public class BG1S extends FunctionFoldActivity {
         return super.onKeyUp(keyCode, event);
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
-
-    @OnClick({R.id.btnDisconnect, R.id.btnGetDeviceInfo, R.id.btnSetMeasureMode})
     public void onViewClicked(View view) {
         if (mBg1sControl == null) {
             addLogInfo("mBg1sControl == null");
             return;
         }
         showLogLayout();
-        switch (view.getId()) {
-            case R.id.btnDisconnect:
-                mBg1sControl.disconnect();
-                addLogInfo("disconnect()");
-                break;
-            case R.id.btnGetDeviceInfo:
-                mBg1sControl.getDeviceStatus();
-                addLogInfo("getDeviceStatus()");
-                break;
-            case R.id.btnSetMeasureMode:
-                mBg1sControl.setMeasureMode(Bg1Profile.CODE_GDH);
-                addLogInfo("setMeasureMode()");
-                break;
+        int id = view.getId();
+        if (id == R.id.btnDisconnect) {
+            mBg1sControl.disconnect();
+            addLogInfo("disconnect()");
+        } else if (id == R.id.btnGetDeviceInfo) {
+            mBg1sControl.getDeviceStatus();
+            addLogInfo("getDeviceStatus()");
+        } else if (id == R.id.btnSetMeasureMode) {
+            mBg1sControl.setMeasureMode(Bg1Profile.CODE_GDH);
+            addLogInfo("setMeasureMode()");
         }
     }
 

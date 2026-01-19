@@ -27,9 +27,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import butterknife.BindView;
-import butterknife.OnClick;
-
 
 public class PO1 extends FunctionFoldActivity {
 
@@ -56,6 +53,11 @@ public class PO1 extends FunctionFoldActivity {
         /* Get po3 controller */
         mPo1Control = iHealthDevicesManager.getInstance().getPo1Device(mDeviceMac);
 
+        // 设置点击监听器
+        findViewById(R.id.btnDisconnect).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnBattery).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnBuzzer).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnIDPS).setOnClickListener(this::onViewClicked);
     }
 
     private iHealthDevicesCallback miHealthDevicesCallback = new iHealthDevicesCallback() {
@@ -142,41 +144,30 @@ public class PO1 extends FunctionFoldActivity {
     }
 
 
-    @OnClick({R.id.btnDisconnect,
-            R.id.btnBattery,
-            R.id.btnBuzzer,
-            R.id.btnIDPS})
     public void onViewClicked(View view) {
         if (mPo1Control == null) {
             addLogInfo("mPo1Control == null");
             return;
         }
         showLogLayout();
-        switch (view.getId()) {
-            case R.id.btnDisconnect:
-                mPo1Control.disconnect();
-                addLogInfo("disconnect()");
-                break;
-
-            case R.id.btnBattery:
-                mPo1Control.getBattery();
-                addLogInfo("getBattery()");
-                break;
-
-            case R.id.btnBuzzer:
-                mPo1Control.openBuzzer(true);
-                addLogInfo("openBuzzer()");
-                break;
-
-            case R.id.btnIDPS:
-                String idps = iHealthDevicesManager.getInstance().getDevicesIDPS(mDeviceMac);
-                Log.i(TAG, "getDevicesIDPS(): " + idps);
-                addLogInfo("getDevicesIDPS()");
-                Message msg = new Message();
-                msg.what = HANDLER_MESSAGE;
-                msg.obj = idps;
-                myHandler.sendMessage(msg);
-                break;
+        int id = view.getId();
+        if (id == R.id.btnDisconnect) {
+            mPo1Control.disconnect();
+            addLogInfo("disconnect()");
+        } else if (id == R.id.btnBattery) {
+            mPo1Control.getBattery();
+            addLogInfo("getBattery()");
+        } else if (id == R.id.btnBuzzer) {
+            mPo1Control.openBuzzer(true);
+            addLogInfo("openBuzzer()");
+        } else if (id == R.id.btnIDPS) {
+            String idps = iHealthDevicesManager.getInstance().getDevicesIDPS(mDeviceMac);
+            Log.i(TAG, "getDevicesIDPS(): " + idps);
+            addLogInfo("getDevicesIDPS()");
+            Message msg = new Message();
+            msg.what = HANDLER_MESSAGE;
+            msg.obj = idps;
+            myHandler.sendMessage(msg);
         }
     }
 

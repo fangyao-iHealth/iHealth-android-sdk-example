@@ -27,21 +27,12 @@ import org.json.JSONObject;
 
 import java.util.Date;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 
 public class BG5S extends FunctionFoldActivity {
-    @BindView(R.id.btnCheckDevice)
     Button mBtnCheckDevice;
-    @BindView(R.id.btnCheckCloud)
     Button mBtnCheckCloud;
-    @BindView(R.id.btnDownload)
     Button mBtnDownload;
-    @BindView(R.id.btnUpgrade)
     Button mBtnUpgrade;
-    @BindView(R.id.btnStopUpgrade)
     Button mBtnStopUpgrade;
     private Context mContext;
     private static final String TAG = "BG5S";
@@ -75,6 +66,32 @@ public class BG5S extends FunctionFoldActivity {
         /* Get bg5s controller */
         mBg5sControl = iHealthDevicesManager.getInstance().getBg5sControl(mDeviceMac);
 
+        // 初始化视图
+        mBtnCheckDevice = findViewById(R.id.btnCheckDevice);
+        mBtnCheckCloud = findViewById(R.id.btnCheckCloud);
+        mBtnDownload = findViewById(R.id.btnDownload);
+        mBtnUpgrade = findViewById(R.id.btnUpgrade);
+        mBtnStopUpgrade = findViewById(R.id.btnStopUpgrade);
+        
+        // 设置点击监听器
+        findViewById(R.id.btnDisconnect).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnMeasurement).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnMeasurement2).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnGetStatus).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnSetUnit).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnSetUnit2).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnSetTime).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnCloseBluetooth).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnSetDisplayMode).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnDeleteBottleInfo).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnGetData).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnSetOfflineMode).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnDeleteData).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnCheckDevice).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnCheckCloud).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnDownload).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnUpgrade).setOnClickListener(this::onViewClicked);
+        findViewById(R.id.btnStopUpgrade).setOnClickListener(this::onViewClicked);
     }
 
     private iHealthDevicesCallback miHealthDevicesCallback = new iHealthDevicesCallback() {
@@ -224,141 +241,86 @@ public class BG5S extends FunctionFoldActivity {
     }
 
 
-    @OnClick({R.id.btnDisconnect,
-            R.id.btnMeasurement,
-            R.id.btnMeasurement2,
-            R.id.btnGetStatus,
-            R.id.btnSetUnit,
-            R.id.btnSetUnit2,
-            R.id.btnSetTime,
-            R.id.btnCloseBluetooth,
-            R.id.btnSetDisplayMode,
-            R.id.btnDeleteBottleInfo,
-            R.id.btnGetData,
-            R.id.btnSetOfflineMode,
-            R.id.btnDeleteData,
-            R.id.btnCheckDevice,
-            R.id.btnCheckCloud,
-            R.id.btnDownload,
-            R.id.btnUpgrade,
-            R.id.btnStopUpgrade})
     public void onViewClicked(View view) {
         if (mBg5sControl == null) {
             addLogInfo("mBg5sControl == null");
             return;
         }
         showLogLayout();
-        switch (view.getId()) {
-            case R.id.btnDisconnect:
-                mBg5sControl.disconnect();
-                addLogInfo("disconnect()");
-                break;
-
-            case R.id.btnMeasurement:
-                mBg5sControl.startMeasure(1);
-                addLogInfo("startMeasure() --> test with blood");
-                break;
-
-            case R.id.btnMeasurement2:
-                mBg5sControl.startMeasure(2);
-                addLogInfo("startMeasure() --> test with control liquid ");
-                break;
-
-            case R.id.btnGetStatus:
-                mBg5sControl.getStatusInfo();
-                addLogInfo("getStatusInfo()");
-                break;
-
-            case R.id.btnSetUnit:
-                mBg5sControl.setUnit(1);
-                addLogInfo("setUnit()--> mmol/L");
-                break;
-
-            case R.id.btnSetUnit2:
-                mBg5sControl.setUnit(2);
-                addLogInfo("setUnit()--> mg/dL");
-                break;
-
-            case R.id.btnSetTime:
-                //timeZone
-                mBg5sControl.setTime(new Date(), -7);
-                addLogInfo("setTime()");
-                break;
-
-            case R.id.btnCloseBluetooth:
-                //timeZone
-                mBg5sControl.closeBluetooth();
-                addLogInfo("closeBluetooth()");
-                break;
-
-            case R.id.btnSetDisplayMode:
-                mBg5sControl.setDisplayMode(false);
-                addLogInfo("setDisplayMode()");
-                break;
-
-            case R.id.btnDeleteBottleInfo:
-                mBg5sControl.deleteUsedStrip();
-                addLogInfo("deleteUsedStrip()");
-                break;
-
-            case R.id.btnGetData:
-                mBg5sControl.getOfflineData();
-                addLogInfo("getOfflineData()");
-                break;
-
-            case R.id.btnSetOfflineMode:
-                mBg5sControl.setOfflineMeasurementMode(false);
-                addLogInfo("setOfflineMeasurementMode()");
-                break;
-
-            case R.id.btnDeleteData:
-                mBg5sControl.deleteOfflineData();
-                addLogInfo("deleteOfflineData()");
-                break;
-
-            case R.id.btnCheckDevice:
-//                UpgradeControl.getInstance().queryDeviceFirmwareInfo(mDeviceMac, iHealthDevicesManager.TYPE_BG5S);
+        int id = view.getId();
+        if (id == R.id.btnDisconnect) {
+            mBg5sControl.disconnect();
+            addLogInfo("disconnect()");
+        } else if (id == R.id.btnMeasurement) {
+            mBg5sControl.startMeasure(1);
+            addLogInfo("startMeasure() --> test with blood");
+        } else if (id == R.id.btnMeasurement2) {
+            mBg5sControl.startMeasure(2);
+            addLogInfo("startMeasure() --> test with control liquid ");
+        } else if (id == R.id.btnGetStatus) {
+            mBg5sControl.getStatusInfo();
+            addLogInfo("getStatusInfo()");
+        } else if (id == R.id.btnSetUnit) {
+            mBg5sControl.setUnit(1);
+            addLogInfo("setUnit()--> mmol/L");
+        } else if (id == R.id.btnSetUnit2) {
+            mBg5sControl.setUnit(2);
+            addLogInfo("setUnit()--> mg/dL");
+        } else if (id == R.id.btnSetTime) {//timeZone
+            mBg5sControl.setTime(new Date(), -7);
+            addLogInfo("setTime()");
+        } else if (id == R.id.btnCloseBluetooth) {//timeZone
+            mBg5sControl.closeBluetooth();
+            addLogInfo("closeBluetooth()");
+        } else if (id == R.id.btnSetDisplayMode) {
+            mBg5sControl.setDisplayMode(false);
+            addLogInfo("setDisplayMode()");
+        } else if (id == R.id.btnDeleteBottleInfo) {
+            mBg5sControl.deleteUsedStrip();
+            addLogInfo("deleteUsedStrip()");
+        } else if (id == R.id.btnGetData) {
+            mBg5sControl.getOfflineData();
+            addLogInfo("getOfflineData()");
+        } else if (id == R.id.btnSetOfflineMode) {
+            mBg5sControl.setOfflineMeasurementMode(false);
+            addLogInfo("setOfflineMeasurementMode()");
+        } else if (id == R.id.btnDeleteData) {
+            mBg5sControl.deleteOfflineData();
+            addLogInfo("deleteOfflineData()");
+        } else if (id == R.id.btnCheckDevice) {//                UpgradeControl.getInstance().queryDeviceFirmwareInfo(mDeviceMac, iHealthDevicesManager.TYPE_BG5S);
 //                addLogInfo("queryDeviceFirmwareInfo()");
-                String idps = iHealthDevicesManager.getInstance().getDevicesIDPS(mDeviceMac);
+            String idps = iHealthDevicesManager.getInstance().getDevicesIDPS(mDeviceMac);
 
-                try {
-                    JSONObject idpsObj = new JSONObject(idps);
-                    firmwareVersion = idpsObj.getString(iHealthDevicesIDPS.FIRMWAREVERSION);
-                    hardwareVersion = idpsObj.getString(iHealthDevicesIDPS.HARDWAREVERSION);
-                    bleFirmwareVersion = idpsObj.getString(iHealthDevicesIDPS.BLEFIRMWAREVERSION);
-                    modelNumber = idpsObj.getString(iHealthDevicesIDPS.MODENUMBER);
+            try {
+                JSONObject idpsObj = new JSONObject(idps);
+                firmwareVersion = idpsObj.getString(iHealthDevicesIDPS.FIRMWAREVERSION);
+                hardwareVersion = idpsObj.getString(iHealthDevicesIDPS.HARDWAREVERSION);
+                bleFirmwareVersion = idpsObj.getString(iHealthDevicesIDPS.BLEFIRMWAREVERSION);
+                modelNumber = idpsObj.getString(iHealthDevicesIDPS.MODENUMBER);
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
-                addLogInfo("queryDeviceFirmwareInfo() -->firmwareVersion:" + firmwareVersion
-                        + " hardwareVersion:" + hardwareVersion + " modelNumber:" + modelNumber);
-                mBtnCheckCloud.setEnabled(true);
-                break;
-            case R.id.btnCheckCloud:
-                UpgradeControl.getInstance().queryDeviceCloudInfo(iHealthDevicesManager.TYPE_BG5S, modelNumber, hardwareVersion, firmwareVersion);
-                addLogInfo("queryDeviceCloudInfo() -->firmwareVersion:" + firmwareVersion
-                        + " hardwareVersion:" + hardwareVersion + " modelNumber:" + modelNumber);
-                break;
-
-            case R.id.btnDownload:
-                UpgradeControl.getInstance().downloadFirmwareFile(iHealthDevicesManager.TYPE_BG5S, modelNumber, hardwareVersion, firmwareVersionCloud);
-                addLogInfo("downloadFirmwareFile() -->firmwareVersionCloud:" + firmwareVersionCloud);
-                break;
-
-            case R.id.btnUpgrade:
-                UpgradeControl.getInstance().startUpgrade(mDeviceMac, iHealthDevicesManager.TYPE_BG5S, modelNumber, hardwareVersion,
-                        firmwareVersionCloud, modelNumber + hardwareVersion + firmwareVersionCloud);
-                addLogInfo("startUpgrade() -->firmwareVersion:" + firmwareVersion
-                        + " hardwareVersion:" + hardwareVersion + " modelNumber:" + modelNumber + " firmwareVersionCloud:" + firmwareVersionCloud);
-                mBtnStopUpgrade.setEnabled(true);
-                break;
-
-            case R.id.btnStopUpgrade:
-                UpgradeControl.getInstance().stopUpgrade(mDeviceMac, iHealthDevicesManager.TYPE_BG5S);
-                addLogInfo("stopUpgrade() " );
-                break;
+            addLogInfo("queryDeviceFirmwareInfo() -->firmwareVersion:" + firmwareVersion
+                    + " hardwareVersion:" + hardwareVersion + " modelNumber:" + modelNumber);
+            mBtnCheckCloud.setEnabled(true);
+        } else if (id == R.id.btnCheckCloud) {
+            UpgradeControl.getInstance().queryDeviceCloudInfo(iHealthDevicesManager.TYPE_BG5S, modelNumber, hardwareVersion, firmwareVersion);
+            addLogInfo("queryDeviceCloudInfo() -->firmwareVersion:" + firmwareVersion
+                    + " hardwareVersion:" + hardwareVersion + " modelNumber:" + modelNumber);
+        } else if (id == R.id.btnDownload) {
+            UpgradeControl.getInstance().downloadFirmwareFile(iHealthDevicesManager.TYPE_BG5S, modelNumber, hardwareVersion, firmwareVersionCloud);
+            addLogInfo("downloadFirmwareFile() -->firmwareVersionCloud:" + firmwareVersionCloud);
+        } else if (id == R.id.btnUpgrade) {
+            UpgradeControl.getInstance().startUpgrade(mDeviceMac, iHealthDevicesManager.TYPE_BG5S, modelNumber, hardwareVersion,
+                    firmwareVersionCloud, modelNumber + hardwareVersion + firmwareVersionCloud);
+            addLogInfo("startUpgrade() -->firmwareVersion:" + firmwareVersion
+                    + " hardwareVersion:" + hardwareVersion + " modelNumber:" + modelNumber + " firmwareVersionCloud:" + firmwareVersionCloud);
+            mBtnStopUpgrade.setEnabled(true);
+        } else if (id == R.id.btnStopUpgrade) {
+            UpgradeControl.getInstance().stopUpgrade(mDeviceMac, iHealthDevicesManager.TYPE_BG5S);
+            addLogInfo("stopUpgrade() ");
         }
     }
 }

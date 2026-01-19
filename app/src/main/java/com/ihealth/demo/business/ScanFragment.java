@@ -22,13 +22,11 @@ import com.ihealth.demo.R;
 import com.ihealth.demo.adapter.ListScanDeviceAdapter;
 import com.ihealth.demo.base.BaseFragment;
 import com.ihealth.demo.business.device.model.DeviceCharacteristic;
+import com.ihealth.demo.databinding.FragmentScanBinding;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import butterknife.BindView;
-import butterknife.OnClick;
 
 import static com.ihealth.demo.business.MainActivity.HANDLER_CONNECTED;
 import static com.ihealth.demo.business.MainActivity.HANDLER_CONNECT_FAIL;
@@ -49,15 +47,11 @@ public class ScanFragment extends BaseFragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    @BindView(R.id.tvListTitle)
+    private FragmentScanBinding binding;
     TextView mTvListTitle;
-    @BindView(R.id.NbList)
     ListView mNbListView;
-    @BindView(R.id.tvLogMessage)
     TextView mTvLogMessage;
-    @BindView(R.id.ScrollViewLog)
     ScrollView mScrollViewLog;
-    @BindView(R.id.logLayout)
     LinearLayout mLogLayout;
 
     private String mDeviceName;
@@ -112,6 +106,20 @@ public class ScanFragment extends BaseFragment {
     public void initView() {
         mContext = getActivity();
         mMainActivity = (MainActivity) mContext;
+        binding = FragmentScanBinding.bind(mRootView);
+        mTvListTitle = binding.tvListTitle;
+        mNbListView = binding.NbList;
+        mTvLogMessage = binding.layoutLog.tvLogMessage;
+        mScrollViewLog = binding.layoutLog.ScrollViewLog;
+        mLogLayout = binding.layoutLog.logLayout;
+        
+        binding.btnDiscovery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onViewClicked();
+            }
+        });
+        
         if (mDeviceName.isEmpty() || mDeviceName == null) {
             return;
         }
@@ -223,16 +231,6 @@ public class ScanFragment extends BaseFragment {
                     device.setDeviceName(typeScan);
                     device.setRssi(rssi);
                     device.setDeviceMac(macScan);
-                    //ECG devices should deal with multiple USB connection duplicate display
-                    if (mDeviceName.equals("ECGUSB") || mDeviceName.equals("ECG3USB")) {
-                        for (int x = 0; x < list_ScanDevices.size(); x++) {
-                            if (list_ScanDevices.get(x).getDeviceMac().equals(device.getDeviceMac())) {
-                                list_ScanDevices.remove(x);
-                                mAdapter.notifyDataSetChanged();
-                                break;
-                            }
-                        }
-                    }
 
                     list_ScanDevices.add(device);
                     mAdapter.setList(list_ScanDevices);
@@ -314,7 +312,6 @@ public class ScanFragment extends BaseFragment {
         iHealthDevicesManager.getInstance().unRegisterClientCallback(callbackId);
     }
 
-    @OnClick(R.id.btnDiscovery)
     public void onViewClicked() {
         mLoadingDialog.show();
         mTvListTitle.setVisibility(View.VISIBLE);
@@ -326,10 +323,7 @@ public class ScanFragment extends BaseFragment {
         } else if (mDeviceName.equals("FDIR-V3")) {
             iHealthDevicesManager.getInstance().startDiscovery(getDiscoveryTypeEnum("FDIR_V3"));
 
-        } else if (mDeviceName.equals("ECGUSB")) {
-            iHealthDevicesManager.getInstance().startDiscovery(getDiscoveryTypeEnum("ECG3USB"));
-
-        } else if (mDeviceName.contains("PO3")) {
+        }else if (mDeviceName.contains("PO3")) {
             iHealthDevicesManager.getInstance().startDiscovery(getDiscoveryTypeEnum("PO3"));
 
         } else if (mDeviceName.contains("KD-723")) {
