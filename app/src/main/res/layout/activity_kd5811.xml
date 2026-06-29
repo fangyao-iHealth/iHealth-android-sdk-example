@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context=".business.device.BP550BT">
+
+    <Button
+        android:id="@+id/btnDisconnect"
+        style="@style/BtnDefaultStyle"
+        android:text="@string/function_item_button_disconnect" />
+
+
+    <TextView
+        style="@style/FunctionHeadDefaultStyle"
+        android:layout_marginTop="@dimen/function_btn_marge_top"
+        android:text="@string/function_item_title_get_information" />
+
+    <Button
+        android:id="@+id/btn_getFunctionInfo"
+        style="@style/BtnDefaultStyle"
+        android:text="Get Function" />
+
+    <Button
+        android:id="@+id/btnSetTime"
+        style="@style/BtnDefaultStyle"
+        android:layout_marginTop="10dp"
+        android:text="@string/function_item_button_set_time" />
+
+    <TextView
+        style="@style/FunctionHeadDefaultStyle"
+        android:layout_marginTop="@dimen/function_btn_marge_top"
+        android:text="@string/function_item_title_data" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnGetDataCount1"
+            style="@style/BtnDefaultStyle"
+            android:layout_marginTop="@dimen/function_btn_marge_top"
+            android:text="Get History Count 1" />
+
+        <Button
+            android:id="@+id/btnGetDataCount2"
+            style="@style/BtnDefaultStyle"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="@dimen/function_btn_marge_top"
+            android:text="Get History Count 2" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnGetData1"
+            style="@style/BtnDefaultStyle"
+            android:layout_marginTop="@dimen/function_btn_marge_top"
+            android:text="Get Offline Data 1" />
+
+        <Button
+            android:id="@+id/btnGetData2"
+            style="@style/BtnDefaultStyle"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="@dimen/function_btn_marge_top"
+            android:text="Get Offline Data 2" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnDeleteData1"
+            style="@style/BtnDefaultStyle"
+            android:layout_marginTop="@dimen/function_btn_marge_top"
+            android:text="Delete Offline Data 1" />
+
+        <Button
+            android:id="@+id/btnDeleteData2"
+            style="@style/BtnDefaultStyle"
+            android:layout_marginTop="@dimen/function_btn_marge_top"
+            android:layout_marginStart="20dp"
+            android:text="Delete Offline Data 2" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnGetDataCountAll"
+        style="@style/BtnDefaultStyle"
+        android:layout_marginTop="@dimen/function_btn_marge_top"
+        android:text="Get History Count All" />
+
+    <Button
+        android:id="@+id/btnGetDataAll"
+        style="@style/BtnDefaultStyle"
+        android:layout_marginTop="@dimen/function_btn_marge_top"
+        android:text="Get Offline Data All" />
+
+    <Button
+        android:id="@+id/btnDeleteDataAll"
+        style="@style/BtnDefaultStyle"
+        android:layout_marginTop="@dimen/function_btn_marge_top"
+        android:text="Delete Offline Data All" />
+
+</LinearLayout>

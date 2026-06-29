@@ -2,11 +2,11 @@ apply plugin: 'com.android.application'
 
 android {
     namespace 'com.ihealth.demo'
-    compileSdkVersion 33
-    buildToolsVersion '30.0.3'
+    compileSdkVersion 35
+    buildToolsVersion '35.0.0'
     defaultConfig {
         applicationId "com.ihealth.demo"
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion 33
         versionCode 7
         versionName "1.2.7"
@@ -43,7 +43,10 @@ android {
 }
 
 dependencies {
-    implementation files('libs/iHealthSDK_2.15.1.jar')
+    implementation files('libs/iHealthSDK_2.16.0.jar')
+    // iHealthSDK 2.16.0 运行时依赖：SQLCipher 加密数据库（net.zetetic.database.sqlcipher.*）
+    implementation group: 'net.zetetic', name: 'sqlcipher-android', version: '4.14.0'
+    implementation group: 'androidx.sqlite', name: 'sqlite', version: '2.6.2'
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.annotation:annotation:1.1.0'

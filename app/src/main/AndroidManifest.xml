@@ -98,6 +98,11 @@
         <activity android:name=".business.device.PT3SBT" />
         <activity android:name=".business.device.PO1" />
         <activity android:name=".business.device.AM6" />
+        <activity android:name=".business.device.KD723SE" />
+        <activity android:name=".business.device.KD5811BT" />
+        <activity android:name=".business.device.BP300CV" />
+        <activity android:name=".business.device.BP300CL" />
+        <activity android:name=".business.device.KN550LT" />
 
         <service
             android:name="com.ido.ble.bluetooth.DeviceConnectService"

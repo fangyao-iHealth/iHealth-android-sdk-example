@@ -320,6 +320,22 @@ public class ScanFragment extends BaseFragment {
         if (mDeviceName.equals("KN550BT")) {
             iHealthDevicesManager.getInstance().startDiscovery(getDiscoveryTypeEnum("BP550BT"));
 
+        } else if (mDeviceName.contains(iHealthDevicesManager.TYPE_KD723SE)) {
+            // 注意：必须在 "KD-723" 判断之前，否则 "KD-723SE" 会被误判为 KD723
+            iHealthDevicesManager.getInstance().startDiscovery(DiscoveryTypeEnum.KD723SE);
+
+        } else if (mDeviceName.contains(iHealthDevicesManager.TYPE_KD5811BT)) {
+            iHealthDevicesManager.getInstance().startDiscovery(DiscoveryTypeEnum.KD5811BT);
+
+        } else if (mDeviceName.contains(iHealthDevicesManager.TYPE_BP300CV)) {
+            iHealthDevicesManager.getInstance().startDiscovery(DiscoveryTypeEnum.BP300CV);
+
+        } else if (mDeviceName.contains(iHealthDevicesManager.TYPE_BP300CL)) {
+            iHealthDevicesManager.getInstance().startDiscovery(DiscoveryTypeEnum.BP300CL);
+
+        } else if (mDeviceName.contains(iHealthDevicesManager.TYPE_KN550LT)) {
+            iHealthDevicesManager.getInstance().startDiscovery(DiscoveryTypeEnum.KN550LT);
+
         } else if (mDeviceName.equals("FDIR-V3")) {
             iHealthDevicesManager.getInstance().startDiscovery(getDiscoveryTypeEnum("FDIR_V3"));
 

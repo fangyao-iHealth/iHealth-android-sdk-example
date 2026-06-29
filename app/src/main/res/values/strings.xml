@@ -289,5 +289,16 @@
     <string name="function_set_time">Set time</string>
     <string name="function_get_time">Get time</string>
     <string name="function_transfer_finished">Transfer Finished</string>
+    <string name="function_item_button_get_latest_offline_data">Get Latest Offline Data</string>
+
+    <!-- OTA (New Protocol) -->
+    <string name="new_ota_title">OTA Upgrade (New Protocol)</string>
+    <string name="new_ota_query_info">Query Device OTA Info</string>
+    <string name="new_ota_check_cloud">Check Cloud Version</string>
+    <string name="new_ota_download">Download Firmware</string>
+    <string name="new_ota_load_local">Load Local Firmware (Assets)</string>
+    <string name="new_ota_start">Start OTA</string>
+    <string name="new_ota_query_status">Query OTA Status</string>
+    <string name="new_ota_cancel">Cancel OTA</string>
 
 </resources>

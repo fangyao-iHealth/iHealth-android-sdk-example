@@ -19,6 +19,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewbinding.ViewBinding;
 
 import com.ec.easylibrary.AppManager;
 import com.ec.easylibrary.dialog.confirm.ConfirmDialog;
@@ -60,6 +61,18 @@ public abstract class BaseActivity extends AppCompatActivity {
     public abstract int contentViewID();
     /** Init  Abstraction Method*/
     public abstract void initView();
+    /** ViewBinding instance (non-null only for subclasses that override {@link #inflateBinding}) */
+    protected ViewBinding binding;
+
+    /**
+     * 子类可选择重写此方法返回 ViewBinding 以启用 viewBinding 方式；
+     * 返回 null（默认）时退回到 {@link #contentViewID()} 方式，保持旧设备页面不变。
+     * Optional: override to return a ViewBinding. Returning null (default) keeps the legacy
+     * contentViewID()/findViewById flow so existing device pages are unaffected.
+     */
+    protected ViewBinding inflateBinding(LayoutInflater inflater) {
+        return null;
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -84,7 +97,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         mLogLayout = findViewById(R.id.logLayout);
         mScrollViewLog = findViewById(R.id.ScrollViewLog);
 
-        if (contentViewID() != 0) {
+        binding = inflateBinding(LayoutInflater.from(this));
+        if (binding != null) {
+            View layout = binding.getRoot();
+            layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            mRlMain.addView(layout);
+        } else if (contentViewID() != 0) {
             View layout = LayoutInflater.from(mContext).inflate(contentViewID(), null);
             layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             mRlMain.addView(layout);

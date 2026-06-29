@@ -41,8 +41,13 @@ import com.ihealth.demo.business.device.HS2S;
 import com.ihealth.demo.business.device.HS2SPRO;
 import com.ihealth.demo.business.device.HS3;
 import com.ihealth.demo.business.device.HS4;
+import com.ihealth.demo.business.device.BP300CL;
+import com.ihealth.demo.business.device.BP300CV;
+import com.ihealth.demo.business.device.KD5811BT;
 import com.ihealth.demo.business.device.KD723;
+import com.ihealth.demo.business.device.KD723SE;
 import com.ihealth.demo.business.device.KD926;
+import com.ihealth.demo.business.device.KN550LT;
 import com.ihealth.demo.business.device.NT13B;
 import com.ihealth.demo.business.device.PO1;
 import com.ihealth.demo.business.device.PO3;
@@ -366,6 +371,26 @@ public class MainActivity extends BaseFragmentActivity {
 
             case iHealthDevicesManager.TYPE_PO1:
                 intent.setClass(MainActivity.this, PO1.class);
+                break;
+
+            case iHealthDevicesManager.TYPE_KD723SE:
+                intent.setClass(MainActivity.this, KD723SE.class);
+                break;
+
+            case iHealthDevicesManager.TYPE_KD5811BT:
+                intent.setClass(MainActivity.this, KD5811BT.class);
+                break;
+
+            case iHealthDevicesManager.TYPE_BP300CV:
+                intent.setClass(MainActivity.this, BP300CV.class);
+                break;
+
+            case iHealthDevicesManager.TYPE_BP300CL:
+                intent.setClass(MainActivity.this, BP300CL.class);
+                break;
+
+            case iHealthDevicesManager.TYPE_KN550LT:
+                intent.setClass(MainActivity.this, KN550LT.class);
                 break;
 
         }

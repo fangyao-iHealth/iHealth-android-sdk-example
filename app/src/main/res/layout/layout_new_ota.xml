@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/color_white"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingBottom="80dp">
+
+    <TextView
+        style="@style/FunctionHeadDefaultStyle"
+        android:layout_marginTop="@dimen/function_btn_marge_top"
+        android:text="@string/new_ota_title" />
+
+    <Button
+        android:id="@+id/btnOtaQueryInfo"
+        style="@style/BtnDefaultStyle"
+        android:layout_marginTop="@dimen/function_btn_marge_top"
+        android:text="@string/new_ota_query_info" />
+
+    <ImageView style="@style/FunctionIconDownStyle" />
+
+    <Button
+        android:id="@+id/btnOtaCheckCloud"
+        style="@style/BtnDefaultStyle"
+        android:enabled="false"
+        android:text="@string/new_ota_check_cloud" />
+
+    <ImageView style="@style/FunctionIconDownStyle" />
+
+    <Button
+        android:id="@+id/btnOtaDownload"
+        style="@style/BtnDefaultStyle"
+        android:enabled="false"
+        android:text="@string/new_ota_download" />
+
+    <ImageView style="@style/FunctionIconDownStyle" />
+
+    <Button
+        android:id="@+id/btnOtaLoadLocal"
+        style="@style/BtnDefaultStyle"
+        android:text="@string/new_ota_load_local" />
+
+    <ImageView style="@style/FunctionIconDownStyle" />
+
+    <Button
+        android:id="@+id/btnOtaStart"
+        style="@style/BtnDefaultStyle"
+        android:enabled="false"
+        android:text="@string/new_ota_start" />
+
+    <ImageView style="@style/FunctionIconDownStyle" />
+
+    <Button
+        android:id="@+id/btnOtaQueryStatus"
+        style="@style/BtnDefaultStyle"
+        android:enabled="false"
+        android:text="@string/new_ota_query_status" />
+
+    <ImageView style="@style/FunctionIconDownStyle" />
+
+    <Button
+        android:id="@+id/btnOtaCancel"
+        style="@style/BtnDefaultStyle"
+        android:enabled="false"
+        android:text="@string/new_ota_cancel" />
+
+</LinearLayout>

@@ -251,5 +251,16 @@
     <string name="function_set_time">设置时间</string>
     <string name="function_get_time">获取时间</string>
     <string name="function_transfer_finished">传输完成</string>
+    <string name="function_item_button_get_latest_offline_data">获取最近一条数据</string>
+
+    <!-- OTA（新协议） -->
+    <string name="new_ota_title">OTA升级（新协议）</string>
+    <string name="new_ota_query_info">查询设备OTA信息</string>
+    <string name="new_ota_check_cloud">查询云端版本</string>
+    <string name="new_ota_download">下载固件</string>
+    <string name="new_ota_load_local">加载本地固件（Assets）</string>
+    <string name="new_ota_start">开始OTA</string>
+    <string name="new_ota_query_status">查询OTA状态</string>
+    <string name="new_ota_cancel">取消OTA</string>
 
 </resources>

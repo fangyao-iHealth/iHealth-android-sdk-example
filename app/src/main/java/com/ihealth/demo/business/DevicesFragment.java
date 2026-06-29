@@ -110,6 +110,11 @@ public class DevicesFragment extends BaseFragment {
         binding.llPt3sbt.setOnClickListener(this::onViewClicked);
         binding.llPO3M.setOnClickListener(this::onViewClicked);
         binding.llPO1.setOnClickListener(this::onViewClicked);
+        binding.llKd723se.setOnClickListener(this::onViewClicked);
+        binding.llKn550Lt.setOnClickListener(this::onViewClicked);
+        binding.llBp300Cv.setOnClickListener(this::onViewClicked);
+        binding.llKd5811.setOnClickListener(this::onViewClicked);
+        binding.llBp300Cl.setOnClickListener(this::onViewClicked);
     }
 
     @Override
@@ -195,6 +200,16 @@ public class DevicesFragment extends BaseFragment {
             deviceName = "PO1";
         } else if (id == R.id.ll_pt3sbt) {
             deviceName = "PT3SBT";
+        } else if (id == R.id.llKd723se) {
+            deviceName = iHealthDevicesManager.TYPE_KD723SE;
+        } else if (id == R.id.llKn550Lt) {
+            deviceName = iHealthDevicesManager.TYPE_KN550LT;
+        } else if (id == R.id.llBp300Cv) {
+            deviceName = iHealthDevicesManager.TYPE_BP300CV;
+        } else if (id == R.id.llKd5811) {
+            deviceName = iHealthDevicesManager.TYPE_KD5811BT;
+        } else if (id == R.id.llBp300Cl) {
+            deviceName = iHealthDevicesManager.TYPE_BP300CL;
         }
         mMainActivity.showScanFragment(deviceName, null);
     }

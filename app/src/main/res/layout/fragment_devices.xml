@@ -37,6 +37,116 @@
                         android:orientation="horizontal">
 
                         <LinearLayout
+                            android:id="@+id/llKd723se"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="@dimen/device_main_item_padding">
+
+                            <ImageView
+                                android:layout_width="@dimen/device_main_item_image_width"
+                                android:layout_height="@dimen/device_main_item_image_height"
+                                android:src="@drawable/icon_device_bp3l" />
+
+                            <TextView
+                                android:layout_width="@dimen/device_main_item_image_width"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/device_main_item_text_padding_top"
+                                android:gravity="center"
+                                android:text="KD723SE"
+                                android:textSize="@dimen/device_main_item_text_size" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/llKn550Lt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="@dimen/device_main_item_padding">
+
+                            <ImageView
+                                android:layout_width="@dimen/device_main_item_image_width"
+                                android:layout_height="@dimen/device_main_item_image_height"
+                                android:src="@drawable/icon_device_bp3l" />
+
+                            <TextView
+                                android:layout_width="@dimen/device_main_item_image_width"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/device_main_item_text_padding_top"
+                                android:gravity="center"
+                                android:text="KN550LT"
+                                android:textSize="@dimen/device_main_item_text_size" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/llBp300Cv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="@dimen/device_main_item_padding">
+
+                            <ImageView
+                                android:layout_width="@dimen/device_main_item_image_width"
+                                android:layout_height="@dimen/device_main_item_image_height"
+                                android:src="@drawable/icon_device_bp3l" />
+
+                            <TextView
+                                android:layout_width="@dimen/device_main_item_image_width"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/device_main_item_text_padding_top"
+                                android:gravity="center"
+                                android:text="BP300CV"
+                                android:textSize="@dimen/device_main_item_text_size" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/llKd5811"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="@dimen/device_main_item_padding">
+
+                            <ImageView
+                                android:layout_width="@dimen/device_main_item_image_width"
+                                android:layout_height="@dimen/device_main_item_image_height"
+                                android:src="@drawable/icon_device_bp3l" />
+
+                            <TextView
+                                android:layout_width="@dimen/device_main_item_image_width"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/device_main_item_text_padding_top"
+                                android:gravity="center"
+                                android:text="KD-5811BT"
+                                android:textSize="@dimen/device_main_item_text_size" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/llBp300Cl"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="@dimen/device_main_item_padding">
+
+                            <ImageView
+                                android:layout_width="@dimen/device_main_item_image_width"
+                                android:layout_height="@dimen/device_main_item_image_height"
+                                android:src="@drawable/icon_device_bp3l" />
+
+                            <TextView
+                                android:layout_width="@dimen/device_main_item_image_width"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/device_main_item_text_padding_top"
+                                android:gravity="center"
+                                android:text="BP300CL"
+                                android:textSize="@dimen/device_main_item_text_size" />
+                        </LinearLayout>
+
+                        <LinearLayout
                             android:id="@+id/llBP5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

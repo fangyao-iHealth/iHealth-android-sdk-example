@@ -9,6 +9,7 @@
     <color name="colorTextBlue">#679AFF</color>
     <color name="colorTextBluePress">#3366FF</color>
     <color name="colorTextBlueEnable">@color/color_white_30</color>
+    <color name="color_white">#FFFFFFFF</color>
 
 
 </resources>
